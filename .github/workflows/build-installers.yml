@@ -48,7 +48,7 @@ jobs:
             --vendor "Shailesh Dhameliya" `
             --input target `
             --main-jar DSE_Final.jar `
-            --main-class org.example.app.Main `
+            --main-class org.example.app.Launcher `
             --dest installer `
             --win-shortcut `
             --win-menu `
