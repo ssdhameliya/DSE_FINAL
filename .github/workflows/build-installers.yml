@@ -38,21 +38,21 @@ jobs:
         run: |
           echo "C:\Program Files (x86)\WiX Toolset v3.14\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
-      - name: Create Windows Installer
-        shell: powershell
-        run: |
-          jpackage `
-            --type exe `
-            --name DSE_Final `
-            --app-version 1.0.0 `
-            --vendor "Shailesh Dhameliya" `
-            --input target `
-            --main-jar DSE_Final.jar `
-            --main-class org.example.app.Launcher `
-            --dest installer `
-            --win-shortcut `
-            --win-menu `
-            --win-dir-chooser
+     name: Create Windows Installer
+  shell: powershell
+  run: |
+    jpackage `
+      --type exe `
+      --name DSE_Final `
+      --app-version 1.0.0 `
+      --vendor "Shailesh Dhameliya" `
+      --input target `
+      --main-jar DSE_Final.jar `
+      --main-class org.example.app.Launcher `
+      --dest installer `
+      --win-shortcut `
+      --win-menu `
+      --win-dir-chooser
 
       - name: Upload EXE
         uses: actions/upload-artifact@v4
@@ -90,7 +90,7 @@ jobs:
             --vendor "Shailesh Dhameliya" \
             --input target \
             --main-jar DSE_Final.jar \
-            --main-class org.example.app.Main \
+            --main-class org.example.app.Launcher \
             --dest installer
 
       - name: Upload DMG
