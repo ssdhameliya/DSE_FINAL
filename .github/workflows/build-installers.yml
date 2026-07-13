@@ -25,6 +25,11 @@ jobs:
       - name: Build Maven Project
         run: mvn clean package
 
+      - name: Verify JAR
+        shell: powershell
+        run: |
+          dir target
+
       - name: Install WiX
         run: choco install wixtoolset --yes
 
@@ -71,6 +76,10 @@ jobs:
 
       - name: Build Maven Project
         run: mvn clean package
+
+      - name: Verify JAR
+        run: |
+          ls -lh target
 
       - name: Create macOS DMG
         run: |
