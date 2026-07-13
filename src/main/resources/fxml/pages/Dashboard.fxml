@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/20"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.controller.DashboardController"
+            stylesheets="@../../css/dashboard.css">
+
+    <!-- ================= HEADER ================= -->
+
+    <top>
+
+        <HBox spacing="15"
+              alignment="CENTER_LEFT"
+              styleClass="header">
+
+            <padding>
+                <Insets top="10" right="20" bottom="10" left="20"/>
+            </padding>
+
+            <!-- Company Logo -->
+
+            <Label text="⚙"
+                   styleClass="header-logo"/>
+
+            <!-- Company Name -->
+
+            <VBox spacing="2">
+
+                <Label text="JavaApp ERP"
+                       styleClass="header-title"/>
+
+                <Label text="Industrial Management System"
+                       styleClass="header-subtitle"/>
+
+            </VBox>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <!-- Dynamic Page Title -->
+
+            <Label fx:id="lblPageTitle"
+                   text="Dashboard"
+                   styleClass="module-title"/>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <!-- Search -->
+
+            <TextField fx:id="txtSearch"
+                       prefWidth="340"
+                       prefHeight="36"
+                       onAction="#search"
+                       promptText="Search Products, Customers, Suppliers..."/>
+
+            <!-- Notification -->
+
+            <Button text="🔔" onAction="#showNotifications"/>
+
+            <!-- Theme -->
+
+            <Button fx:id="btnTheme"
+                    text="🌙"
+                    onAction="#toggleTheme"/>
+
+            <!-- Clock -->
+
+            <Label fx:id="lblClock"
+                   styleClass="clock"/>
+
+            <!-- User -->
+
+            <MenuButton fx:id="menuUser" text="👤 Administrator">
+
+                <items>
+
+                    <MenuItem text="Profile" onAction="#showProfile"/>
+
+                    <MenuItem text="Change Password" onAction="#changePassword"/>
+
+                    <SeparatorMenuItem/>
+
+                    <MenuItem text="Logout" onAction="#logout"/>
+
+                </items>
+
+            </MenuButton>
+
+        </HBox>
+
+    </top>
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <left>
+
+        <VBox spacing="10"
+              prefWidth="250"
+              styleClass="sidebar">
+
+            <padding>
+                <Insets top="20" right="10" bottom="20" left="10"/>
+            </padding>
+
+            <Label text="MAIN"
+                   styleClass="sidebar-section"/>
+
+            <Button
+                fx:id="btnDashboard"
+                text="🏠 Dashboard"
+                onAction="#openDashboard"/>
+
+            <Separator/>
+
+            <Label text="MASTER"
+                   styleClass="sidebar-section"/>
+
+            <Button
+                fx:id="btnItem"
+                text="📦 Item Master"
+                onAction="#openItemMaster"/>
+
+            <Button fx:id="btnMasters"
+                    text="🗂 Masters"
+                    onAction="#openMasters"/>
+
+
+            <Button fx:id="btnCustomer"
+                    text="👥 Customers"
+
+                    onAction="#openCustomers"/>
+
+            <Button fx:id="btnSupplier"
+                    text="🏭 Suppliers"
+
+                    onAction="#openSupplier"/>
+
+            <Separator/>
+
+            <Label text="TRANSACTIONS"
+                   styleClass="sidebar-section"/>
+
+            <Button fx:id="btnInventory"
+                    text="📊 Inventory"
+
+                    onAction="#openInventory"/>
+
+            <Button fx:id="btnPurchase"
+                    text="🛒 Purchase"
+
+                    onAction="#openPurchase"/>
+
+            <Button fx:id="btnSales"
+                    text="💰 Sales"
+
+                    onAction="#openSales"/>
+
+            <Separator/>
+
+            <Label text="REPORTS"
+                   styleClass="sidebar-section"/>
+
+            <Button fx:id="btnReports"
+                    text="📄 Reports"
+
+                    onAction="#openReports"/>
+
+            <Separator/>
+
+            <Label text="SYSTEM"
+                   styleClass="sidebar-section"/>
+
+            <Button fx:id="btnSettings"
+                    text="⚙ Settings"
+
+                    onAction="#openSettings"/>
+
+        </VBox>
+
+    </left>
+
+    <!-- ================= CONTENT ================= -->
+
+    <center>
+
+        <StackPane fx:id="contentPane"
+                   styleClass="content"/>
+
+    </center>
+
+</BorderPane>

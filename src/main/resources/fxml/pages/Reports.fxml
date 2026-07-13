@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.example.controller.ReportsController" spacing="18" style="-fx-padding:25;">
+    <HBox alignment="CENTER_LEFT" spacing="12">
+        <VBox>
+            <Label text="Business Reports" style="-fx-font-size:24px;-fx-font-weight:bold;"/>
+            <Label text="Professional management reporting for sales, purchasing and inventory."
+                   style="-fx-text-fill:#667085;"/>
+        </VBox>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Button text="Refresh" onAction="#refresh"/>
+    </HBox>
+    <HBox alignment="CENTER_LEFT" spacing="10"
+          style="-fx-padding:14;-fx-background-color:#f5f7fa;-fx-background-radius:8;">
+        <Label text="Report period" style="-fx-font-weight:bold;"/>
+        <DatePicker fx:id="dpFrom" promptText="From"/>
+        <Label text="to"/>
+        <DatePicker fx:id="dpTo" promptText="To"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Button text="Export Excel" onAction="#exportExcel"/>
+        <Button text="Export PDF" onAction="#exportPdf" style="-fx-font-weight:bold;"/>
+    </HBox>
+    <GridPane hgap="18" vgap="18">
+        <VBox GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="dashboard-card" prefWidth="245">
+            <Label text="Purchase Total"/>
+            <Label fx:id="lblPurchase" style="-fx-font-size:22px;-fx-font-weight:bold;"/>
+        </VBox>
+        <VBox GridPane.rowIndex="0" GridPane.columnIndex="1" styleClass="dashboard-card" prefWidth="245">
+            <Label text="Sales Total"/>
+            <Label fx:id="lblSales" style="-fx-font-size:22px;-fx-font-weight:bold;"/>
+        </VBox>
+        <VBox GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="dashboard-card" prefWidth="245">
+            <Label text="Stock Value"/>
+            <Label fx:id="lblStock" style="-fx-font-size:22px;-fx-font-weight:bold;"/>
+        </VBox>
+        <VBox GridPane.rowIndex="1" GridPane.columnIndex="1" styleClass="dashboard-card" prefWidth="245">
+            <Label text="Low-stock Items"/>
+            <Label fx:id="lblLowStock" style="-fx-font-size:22px;-fx-font-weight:bold;"/>
+        </VBox>
+    </GridPane>
+    <TitledPane text="Included in each report" expanded="true" collapsible="false">
+        <content>
+            <VBox spacing="6" style="-fx-padding:10;">
+                <Label text="• Executive summary: sales, purchases, inventory value and low-stock count"/>
+                <Label text="• Sales by customer and purchases by supplier for the selected period"/>
+                <Label text="• Low-stock attention list with available and minimum quantities"/>
+                <Label text="• Excel workbook: separate, filterable sheets; PDF: print-ready management summary"/>
+            </VBox>
+        </content>
+    </TitledPane>
+</VBox>

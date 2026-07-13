@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.controller.LoginController"
+            stylesheets="@../../css/login.css">
+
+    <!-- LEFT PANEL -->
+    <left>
+        <VBox prefWidth="600"
+              alignment="CENTER"
+              spacing="20"
+              styleClass="left-panel">
+
+            <Label text="⚙"
+                   styleClass="logo"/>
+
+            <Label text="JavaApp ERP"
+                   styleClass="title"/>
+
+            <Label text="Engineering Business Suite"
+                   styleClass="subtitle"/>
+
+            <Label text="Precision in Engineering&#10;Excellence in Business."
+                   wrapText="true"
+                   styleClass="quote"/>
+
+        </VBox>
+    </left>
+
+    <!-- RIGHT PANEL -->
+    <center>
+
+        <VBox alignment="CENTER"
+              spacing="18"
+              styleClass="login-panel">
+
+            <padding>
+                <Insets top="50" right="60" bottom="50" left="60"/>
+            </padding>
+
+            <Label text="Welcome Back"
+                   styleClass="login-title"/>
+
+            <TextField fx:id="txtUsername"
+                       promptText="Email or username"
+                       prefHeight="42"/>
+
+            <PasswordField fx:id="txtPassword"
+                           promptText="Password"
+                           prefHeight="42"/>
+
+            <TextField fx:id="txtOtp" promptText="Email verification code" prefHeight="42"/>
+
+            <HBox spacing="15" alignment="CENTER_LEFT">
+
+                <CheckBox fx:id="chkRemember"
+                          text="Remember Me"/>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <ToggleButton fx:id="btnTheme"
+                              text="🌙"
+                              onAction="#toggleTheme"/>
+
+            </HBox>
+
+            <Button fx:id="btnLogin"
+                    text="LOGIN / VERIFY OTP"
+                    prefWidth="250"
+                    prefHeight="45"
+                    onAction="#login"/>
+
+            <Hyperlink text="Create a new User account" onAction="#register"/>
+
+            <Label fx:id="lblMessage"
+                   styleClass="message"/>
+
+        </VBox>
+
+    </center>
+
+    <!-- FOOTER -->
+    <bottom>
+
+        <HBox alignment="CENTER_RIGHT"
+              spacing="20"
+              styleClass="footer">
+
+            <padding>
+                <Insets top="10" right="20" bottom="10" left="20"/>
+            </padding>
+
+            <Label text="Version 0.1.0"/>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <Label fx:id="lblClock"
+                   text="00:00:00"/>
+
+        </HBox>
+
+    </bottom>
+
+</BorderPane>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.example.controller.SettingsController" spacing="18" style="-fx-padding:28;">
+    <Label text="Settings" style="-fx-font-size:24px;-fx-font-weight:bold;"/>
+    <Label
+        text="Set company details, email delivery and notification preferences here. Nothing needs to be entered in a project configuration file."
+        wrapText="true" style="-fx-text-fill:#667085;"/>
+    <GridPane hgap="15" vgap="12">
+        <Label text="Company Name"/>
+        <TextField fx:id="txtCompanyName" GridPane.columnIndex="1" prefWidth="350"/>
+        <Label text="Phone" GridPane.rowIndex="1"/>
+        <TextField fx:id="txtPhone" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+        <Label text="Company Email" GridPane.rowIndex="2"/>
+        <TextField fx:id="txtEmail" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+        <Label text="GSTIN" GridPane.rowIndex="3"/>
+        <TextField fx:id="txtGstin" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+        <Separator GridPane.rowIndex="4" GridPane.columnSpan="2"/>
+        <Label text="Sending Email Address" GridPane.rowIndex="5"/>
+        <TextField fx:id="txtSmtpEmail" promptText="name@yahoo.com" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+        <Label text="Email App Password" GridPane.rowIndex="6"/>
+        <PasswordField fx:id="txtSmtpPassword" promptText="Email provider app password" GridPane.rowIndex="6"
+                       GridPane.columnIndex="1"/>
+        <Label text="Use an app password from your email provider, never your normal email password." wrapText="true"
+               style="-fx-text-fill:#667085;" GridPane.rowIndex="7" GridPane.columnSpan="2"/>
+        <Separator GridPane.rowIndex="8" GridPane.columnSpan="2"/>
+        <Label text="Notifications" GridPane.rowIndex="9"/>
+        <CheckBox fx:id="chkNotifications" text="Show and keep application notifications" GridPane.rowIndex="9"
+                  GridPane.columnIndex="1"/>
+    </GridPane>
+    <Button text="Save Settings" onAction="#save" prefWidth="180"/>
+</VBox>

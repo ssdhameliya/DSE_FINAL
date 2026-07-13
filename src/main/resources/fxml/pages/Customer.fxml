@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.controller.CustomerController">
+    <top>
+        <VBox spacing="12" style="-fx-padding:20;">
+            <HBox spacing="15" alignment="CENTER_LEFT">
+                <Label text="Customers" style="-fx-font-size:24px;-fx-font-weight:bold;"/>
+                <Pane HBox.hgrow="ALWAYS"/>
+                <TextField fx:id="txtSearch" promptText="Search customer..." prefWidth="250"/>
+            </HBox>
+            <HBox spacing="10">
+                <Button text="➕ New Customer" onAction="#newParty"/>
+                <Button text="✏ Edit" onAction="#editParty"/>
+                <Button text="🗑 Delete" onAction="#deleteParty"/>
+                <Button text="🔄 Refresh" onAction="#refresh"/>
+            </HBox>
+        </VBox>
+    </top>
+    <center>
+        <TableView fx:id="tableParties">
+            <columns>
+                <TableColumn fx:id="colCode" text="Code" prefWidth="100"/>
+                <TableColumn fx:id="colName" text="Customer Name" prefWidth="170"/>
+                <TableColumn fx:id="colContact" text="Contact Person" prefWidth="130"/>
+                <TableColumn fx:id="colPhone" text="Phone" prefWidth="120"/>
+                <TableColumn fx:id="colEmail" text="Email" prefWidth="210"/>
+                <TableColumn fx:id="colGstin" text="GSTIN" prefWidth="140"/>
+                <TableColumn fx:id="colAddress" text="Address" prefWidth="220"/>
+                <TableColumn fx:id="colOpeningBalance" text="Opening Balance" prefWidth="130"/>
+                <TableColumn fx:id="colActive" text="Active" prefWidth="80"/>
+            </columns>
+        </TableView>
+    </center>
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" style="-fx-padding:12 20;">
+            <Label fx:id="lblRecordCount"/>
+        </HBox>
+    </bottom>
+</BorderPane>

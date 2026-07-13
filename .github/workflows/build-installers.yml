@@ -1,0 +1,91 @@
+name: Build Installers
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+jobs:
+  windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Build Maven Project
+        run: mvn clean package
+
+      - name: Install WiX
+        run: choco install wixtoolset --yes
+
+      - name: Add WiX to PATH
+        shell: powershell
+        run: |
+          echo "C:\Program Files (x86)\WiX Toolset v3.14\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+      - name: Create Windows Installer
+        shell: powershell
+        run: |
+          jpackage `
+            --type exe `
+            --name DSE_Final `
+            --app-version 1.0.0 `
+            --vendor "Shailesh Dhameliya" `
+            --input target `
+            --main-jar DSE_Final.jar `
+            --main-class org.example.app.Main `
+            --dest installer `
+            --win-shortcut `
+            --win-menu `
+            --win-dir-chooser
+
+      - name: Upload EXE
+        uses: actions/upload-artifact@v4
+        with:
+          name: Windows-Installer
+          path: installer/*.exe
+
+  macos:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Build Maven Project
+        run: mvn clean package
+
+      - name: Create macOS DMG
+        run: |
+          jpackage \
+            --type dmg \
+            --name DSE_Final \
+            --app-version 1.0.0 \
+            --vendor "Shailesh Dhameliya" \
+            --input target \
+            --main-jar DSE_Final.jar \
+            --main-class org.example.app.Main \
+            --dest installer
+
+      - name: Upload DMG
+        uses: actions/upload-artifact@v4
+        with:
+          name: macOS-DMG
+          path: installer/*.dmg

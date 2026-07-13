@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.controller.EmailSettingsController" stylesheets="@../../css/login.css">
+    <center>
+        <VBox alignment="CENTER" spacing="14" styleClass="login-panel" maxWidth="480">
+            <padding>
+                <Insets top="55" right="55" bottom="55" left="55"/>
+            </padding>
+            <Label text="Yahoo Email Setup" styleClass="login-title"/>
+            <Label text="Required for secure OTP sign-in and optional invoice emails." wrapText="true"/>
+            <TextField fx:id="txtSmtpEmail" promptText="Yahoo email"/>
+            <PasswordField fx:id="txtSmtpPassword" promptText="Yahoo app password"/>
+            <Label
+                text="Create this in Yahoo Account Security → Generate app password. Your normal Yahoo password will not work."
+                wrapText="true" style="-fx-text-fill:#667085;"/>
+            <Button text="Save Email Settings" onAction="#save" prefWidth="250"/>
+            <Hyperlink text="Back to login" onAction="#back"/>
+        </VBox>
+    </center>
+</BorderPane>

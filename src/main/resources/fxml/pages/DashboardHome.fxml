@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/20"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.controller.DashboardHomeController"
+      spacing="20"
+      style="-fx-padding:20;">
+
+    <!-- Welcome Title -->
+
+    <Label text="Welcome back, Administrator 👋"
+           styleClass="welcome-title"/>
+
+    <!-- KPI Cards -->
+
+    <FlowPane hgap="20"
+              vgap="20"
+              prefWrapLength="1200">
+
+        <!-- Products -->
+
+        <VBox spacing="10"
+              styleClass="dashboard-card"
+              prefWidth="260"
+              prefHeight="140">
+
+            <HBox spacing="10"
+                  alignment="CENTER_LEFT">
+
+                <Label text="📦"
+                       style="-fx-font-size:28;"/>
+
+                <VBox>
+
+                    <Label text="Products"
+                           styleClass="card-title"/>
+
+                    <Label fx:id="lblProducts"
+                           styleClass="card-value"/>
+
+                </VBox>
+
+            </HBox>
+
+            <Separator/>
+
+            <Label fx:id="lblProductsNote"
+                   styleClass="card-success"/>
+
+        </VBox>
+
+        <!-- Customers -->
+
+        <VBox spacing="10"
+              styleClass="dashboard-card"
+              prefWidth="260"
+              prefHeight="140">
+
+            <HBox spacing="10"
+                  alignment="CENTER_LEFT">
+
+                <Label text="👥"
+                       style="-fx-font-size:28;"/>
+
+                <VBox>
+
+                    <Label text="Customers"
+                           styleClass="card-title"/>
+
+                    <Label fx:id="lblCustomers"
+                           styleClass="card-value"/>
+
+                </VBox>
+
+            </HBox>
+
+            <Separator/>
+
+            <Label fx:id="lblCustomersNote"
+                   styleClass="card-success"/>
+
+        </VBox>
+
+        <!-- Orders -->
+
+        <VBox spacing="10"
+              styleClass="dashboard-card"
+              prefWidth="260"
+              prefHeight="140">
+
+            <HBox spacing="10"
+                  alignment="CENTER_LEFT">
+
+                <Label text="🛒"
+                       style="-fx-font-size:28;"/>
+
+                <VBox>
+
+                    <Label text="Orders"
+                           styleClass="card-title"/>
+
+                    <Label fx:id="lblOrders"
+                           styleClass="card-value"/>
+
+                </VBox>
+
+            </HBox>
+
+            <Separator/>
+
+            <Label fx:id="lblOrdersNote"
+                   styleClass="card-warning"/>
+
+        </VBox>
+
+        <!-- Stock -->
+
+        <VBox spacing="10"
+              styleClass="dashboard-card"
+              prefWidth="260"
+              prefHeight="140">
+
+            <HBox spacing="10"
+                  alignment="CENTER_LEFT">
+
+                <Label text="💰"
+                       style="-fx-font-size:28;"/>
+
+                <VBox>
+
+                    <Label text="Stock Value"
+                           styleClass="card-title"/>
+
+                    <Label fx:id="lblStockValue"
+                           styleClass="card-value"/>
+
+                </VBox>
+
+            </HBox>
+
+            <Separator/>
+
+            <Label fx:id="lblStockNote"
+                   styleClass="card-info"/>
+
+        </VBox>
+
+    </FlowPane>
+
+    <VBox VBox.vgrow="ALWAYS"/>
+
+</VBox>

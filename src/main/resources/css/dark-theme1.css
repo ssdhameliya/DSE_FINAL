@@ -1,0 +1,45 @@
+.root {
+    -fx-base: #172033;
+    -fx-background-color: #111827;
+    -fx-text-fill: #e5e7eb;
+}
+
+.label {
+    -fx-text-fill: #e5e7eb;
+}
+
+.text-field, .password-field, .text-area, .combo-box, .date-picker, .table-view, .list-view {
+    -fx-background-color: #1f2937;
+    -fx-text-fill: #f9fafb;
+    -fx-control-inner-background: #1f2937;
+}
+
+.text-field .text, .password-field .text, .text-area .text {
+    -fx-fill: #f9fafb;
+}
+
+.button, .menu-button, .toggle-button {
+    -fx-background-color: #26364f;
+    -fx-text-fill: #f9fafb;
+    -fx-background-radius: 7;
+}
+
+.button:hover, .menu-button:hover, .toggle-button:hover {
+    -fx-background-color: #334a6e;
+}
+
+.table-view .column-header-background, .table-view .column-header {
+    -fx-background-color: #26364f;
+}
+
+.table-view .table-cell {
+    -fx-text-fill: #e5e7eb;
+}
+
+.header, .sidebar {
+    -fx-background-color: #111827;
+}
+
+.content {
+    -fx-background-color: #111827;
+}

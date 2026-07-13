@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.controller.MasterDataController">
+
+    <left>
+
+        <VBox spacing="8"
+              prefWidth="220"
+              style="-fx-padding:15; -fx-background-color:#F4F6F8;">
+
+            <Label text="Lookup Types"
+                   style="-fx-font-size:18; -fx-font-weight:bold;"/>
+
+            <ListView fx:id="lstTypes"
+                      VBox.vgrow="ALWAYS"/>
+
+        </VBox>
+
+    </left>
+
+    <center>
+
+        <VBox spacing="15"
+              style="-fx-padding:20;">
+
+            <HBox spacing="10">
+
+                <TextField fx:id="txtSearch"
+                           promptText="Search..."
+                           HBox.hgrow="ALWAYS"/>
+
+                <Button text="🔄 Refresh"
+                        onAction="#refresh"/>
+
+            </HBox>
+
+            <TableView fx:id="tblLookup"
+                       VBox.vgrow="ALWAYS">
+
+                <columns>
+
+                    <TableColumn fx:id="colCode"
+                                 text="Code"
+                                 prefWidth="120"/>
+
+                    <TableColumn fx:id="colValue"
+                                 text="Value"
+                                 prefWidth="220"/>
+
+                    <TableColumn fx:id="colDescription"
+                                 text="Description"
+                                 prefWidth="280"/>
+
+                </columns>
+
+            </TableView>
+
+            <HBox spacing="15"
+                  alignment="CENTER_RIGHT">
+
+                <Button text="➕ Add"
+                        onAction="#addLookup"/>
+
+                <Button text="✏ Edit"
+                        onAction="#editLookup"/>
+
+                <Button text="🗑 Delete"
+                        onAction="#deleteLookup"/>
+
+            </HBox>
+
+        </VBox>
+
+    </center>
+
+</BorderPane>

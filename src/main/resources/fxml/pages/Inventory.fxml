@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.controller.InventoryController">
+    <top>
+        <VBox spacing="12" style="-fx-padding:20;">
+            <Label text="Inventory" style="-fx-font-size:24px;-fx-font-weight:bold;"/>
+            <HBox spacing="12">
+                <TextField fx:id="txtSearch" promptText="Search item..." prefWidth="250"/>
+                <CheckBox fx:id="chkLowStock" text="Low stock only"/>
+                <Button text="Refresh" onAction="#refresh"/>
+                <Pane HBox.hgrow="ALWAYS"/>
+                <Label fx:id="lblSummary"/>
+            </HBox>
+        </VBox>
+    </top>
+    <center>
+        <TableView fx:id="tableItems">
+            <columns>
+                <TableColumn fx:id="colCode" text="Code" prefWidth="120"/>
+                <TableColumn fx:id="colDescription" text="Description" prefWidth="250"/>
+                <TableColumn fx:id="colCategory" text="Category" prefWidth="150"/>
+                <TableColumn fx:id="colStock" text="Current Stock" prefWidth="120"/>
+                <TableColumn fx:id="colMinimum" text="Minimum Stock" prefWidth="120"/>
+                <TableColumn fx:id="colUnit" text="Unit" prefWidth="100"/>
+            </columns>
+        </TableView>
+    </center>
+</BorderPane>

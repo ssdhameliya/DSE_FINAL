@@ -1,0 +1,40 @@
+.root {
+
+    -fx-background-color: linear-gradient(to bottom, #0F172A, #1E3A8A);
+
+}
+
+.logo {
+
+    -fx-font-size: 80px;
+    -fx-text-fill: white;
+
+}
+
+.title {
+
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+
+}
+
+.subtitle {
+
+    -fx-font-size: 18px;
+    -fx-text-fill: #E2E8F0;
+
+}
+
+.status {
+
+    -fx-font-size: 15px;
+    -fx-text-fill: white;
+
+}
+
+.progress-bar {
+
+    -fx-accent: #4F9DFF;
+
+}

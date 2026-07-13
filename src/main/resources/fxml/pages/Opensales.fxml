@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.controller.SalesController">
+    <top>
+        <VBox spacing="12" style="-fx-padding:20;">
+            <Label text="Sales Invoice" style="-fx-font-size:24px;-fx-font-weight:bold;"/>
+            <GridPane hgap="12" vgap="10">
+                <Label text="Invoice No"/>
+                <TextField fx:id="txtInvoiceNo" editable="false" GridPane.columnIndex="1"/>
+                <Label text="Date" GridPane.columnIndex="2"/>
+                <DatePicker fx:id="dpInvoiceDate" GridPane.columnIndex="3"/>
+                <Label text="Customer" GridPane.rowIndex="1"/>
+                <ComboBox fx:id="cmbCustomer" prefWidth="320" GridPane.rowIndex="1" GridPane.columnIndex="1"
+                          GridPane.columnSpan="3"/>
+            </GridPane>
+        </VBox>
+    </top>
+    <center>
+        <VBox spacing="12" style="-fx-padding:0 20 20 20;">
+            <TitledPane text="Add Item" collapsible="false">
+                <content>
+                    <HBox spacing="10" style="-fx-padding:12;">
+                        <ComboBox fx:id="cmbItem" promptText="Select item" prefWidth="330"/>
+                        <TextField fx:id="txtQuantity" promptText="Quantity" prefWidth="100"/>
+                        <TextField fx:id="txtRate" promptText="Rate" prefWidth="100"/>
+                        <Button text="Add Line" onAction="#addLine"/>
+                        <Button text="Remove Selected" onAction="#removeLine"/>
+                    </HBox>
+                </content>
+            </TitledPane>
+            <TableView fx:id="tableLines" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colItem" text="Item" prefWidth="300"/>
+                    <TableColumn fx:id="colQuantity" text="Qty" prefWidth="90"/>
+                    <TableColumn fx:id="colRate" text="Rate" prefWidth="100"/>
+                    <TableColumn fx:id="colGst" text="GST %" prefWidth="90"/>
+                    <TableColumn fx:id="colTotal" text="Line Total" prefWidth="130"/>
+                </columns>
+            </TableView>
+            <HBox alignment="CENTER_RIGHT" spacing="25">
+                <Label text="Subtotal:"/>
+                <Label fx:id="lblSubtotal"/>
+                <Label text="GST:"/>
+                <Label fx:id="lblGst"/>
+                <Label text="Grand Total:" style="-fx-font-weight:bold;"/>
+                <Label fx:id="lblGrandTotal" style="-fx-font-weight:bold;"/>
+            </HBox>
+            <Label text="Remarks"/>
+            <TextArea fx:id="txtRemarks" prefRowCount="2"/>
+        </VBox>
+    </center>
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" spacing="12" style="-fx-padding:15 20;">
+            <CheckBox fx:id="chkSendEmail" text="Email requested (send manually)"/>
+            <Button text="New Invoice" onAction="#newSale"/>
+            <Button text="Send Invoice Email" onAction="#sendInvoiceEmail"/>
+            <Button text="💾 Save Sale" onAction="#saveSale"/>
+        </HBox>
+    </bottom>
+</BorderPane>

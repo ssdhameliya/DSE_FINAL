@@ -1,0 +1,36 @@
+.root {
+    -fx-base: #ffffff;
+    -fx-background-color: #f4f7fb;
+    -fx-text-fill: #1f2937;
+}
+
+.label {
+    -fx-text-fill: #1f2937;
+}
+
+.text-field, .password-field, .text-area, .combo-box, .date-picker, .table-view, .list-view {
+    -fx-background-color: white;
+    -fx-control-inner-background: white;
+}
+
+.button, .menu-button, .toggle-button {
+    -fx-background-color: #e9eff8;
+    -fx-text-fill: #173a66;
+    -fx-background-radius: 7;
+}
+
+.button:hover, .menu-button:hover, .toggle-button:hover {
+    -fx-background-color: #d7e5f7;
+}
+
+.header {
+    -fx-background-color: #ffffff;
+}
+
+.sidebar {
+    -fx-background-color: #173a66;
+}
+
+.content {
+    -fx-background-color: #f4f7fb;
+}

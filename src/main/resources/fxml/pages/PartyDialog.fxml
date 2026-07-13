@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.controller.PartyDialogController" prefWidth="620" prefHeight="500">
+    <top>
+        <HBox style="-fx-background-color:#2E7D32;-fx-padding:15;">
+            <Label fx:id="lblTitle" style="-fx-text-fill:white;-fx-font-size:22;-fx-font-weight:bold;"/>
+        </HBox>
+    </top>
+    <center>
+        <GridPane hgap="15" vgap="12" style="-fx-padding:20;">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="30"/>
+                <ColumnConstraints percentWidth="70"/>
+            </columnConstraints>
+            <Label text="Code" GridPane.rowIndex="0"/>
+            <TextField fx:id="txtCode" editable="false" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+            <Label text="Name *" GridPane.rowIndex="1"/>
+            <TextField fx:id="txtName" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+            <Label text="Contact Person" GridPane.rowIndex="2"/>
+            <TextField fx:id="txtContact" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+            <Label text="Phone" GridPane.rowIndex="3"/>
+            <TextField fx:id="txtPhone" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+            <Label text="Email" GridPane.rowIndex="4"/>
+            <TextField fx:id="txtEmail" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+            <Label text="GSTIN" GridPane.rowIndex="5"/>
+            <TextField fx:id="txtGstin" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+            <Label text="Address" GridPane.rowIndex="6"/>
+            <TextArea fx:id="txtAddress" prefRowCount="3" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+            <Label text="Opening Balance" GridPane.rowIndex="7"/>
+            <TextField fx:id="txtOpeningBalance" GridPane.rowIndex="7" GridPane.columnIndex="1"/>
+            <Label text="Active" GridPane.rowIndex="8"/>
+            <CheckBox fx:id="chkActive" GridPane.rowIndex="8" GridPane.columnIndex="1"/>
+        </GridPane>
+    </center>
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" spacing="12" style="-fx-padding:15;">
+            <Button text="💾 Save" onAction="#save"/>
+            <Button text="Cancel" onAction="#cancel"/>
+        </HBox>
+    </bottom>
+</BorderPane>

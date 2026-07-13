@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.controller.LookupDialogController"
+            prefWidth="520"
+            prefHeight="340">
+
+    <top>
+
+        <HBox spacing="10"
+              alignment="CENTER_LEFT"
+              style="-fx-background-color:#2E7D32;-fx-padding:15;">
+
+            <Label text="Master Entry"
+                   style="-fx-text-fill:white;
+                          -fx-font-size:20;
+                          -fx-font-weight:bold;"/>
+
+        </HBox>
+
+    </top>
+
+    <center>
+
+        <GridPane hgap="15"
+                  vgap="15"
+                  style="-fx-padding:20;">
+
+            <columnConstraints>
+                <ColumnConstraints minWidth="120"/>
+                <ColumnConstraints hgrow="NEVER"/>
+
+                <ColumnConstraints minWidth="250"
+                                   hgrow="ALWAYS"/>
+            </columnConstraints>
+
+            <Label text="Code"
+                   GridPane.rowIndex="0"
+                   GridPane.columnIndex="0"/>
+
+            <TextField fx:id="txtCode"
+                       editable="false"
+                       GridPane.rowIndex="0"
+                       GridPane.columnIndex="1"/>
+
+            <Label text="Value"
+                   GridPane.rowIndex="1"
+                   GridPane.columnIndex="0"/>
+
+            <TextField fx:id="txtValue"
+                       GridPane.rowIndex="1"
+                       GridPane.columnIndex="1"/>
+
+            <Label text="Description"
+                   GridPane.rowIndex="2"
+                   GridPane.columnIndex="0"/>
+
+            <TextArea fx:id="txtDescription"
+                      prefRowCount="3"
+                      GridPane.rowIndex="2"
+                      GridPane.columnIndex="1"/>
+
+            <Label text="Display Order"
+                   GridPane.rowIndex="3"
+                   GridPane.columnIndex="0"/>
+
+            <Spinner fx:id="spnOrder"
+                     editable="true"
+                     GridPane.rowIndex="3"
+                     GridPane.columnIndex="1"/>
+
+            <CheckBox fx:id="chkActive"
+                      text="Active"
+                      selected="true"
+                      GridPane.rowIndex="4"
+                      GridPane.columnIndex="1"/>
+
+        </GridPane>
+
+    </center>
+
+    <bottom>
+
+        <HBox spacing="10"
+              alignment="CENTER_RIGHT"
+              style="-fx-padding:15;">
+
+            <Button text="Save"
+                    onAction="#save"/>
+
+            <Button text="Cancel"
+                    onAction="#cancel"/>
+
+        </HBox>
+
+    </bottom>
+
+</BorderPane>
