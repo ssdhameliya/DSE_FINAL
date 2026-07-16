@@ -28,14 +28,14 @@ public final class ThemeManager {
 
             scene.getStylesheets().add(
                 ThemeManager.class
-                    .getResource("/css/dark-theme1.css")
+                    .getResource("/css/dark-theme.css")
                     .toExternalForm());
 
         } else {
 
             scene.getStylesheets().add(
                 ThemeManager.class
-                    .getResource("/css/light-theme1.css")
+                    .getResource("/css/light-theme.css")
                     .toExternalForm());
 
         }

@@ -9,10 +9,17 @@ import java.net.URL;
 
 public class NavigationManager {
 
+    private static NavigationManager instance;
+
     private final StackPane contentPane;
 
     public NavigationManager(StackPane contentPane) {
         this.contentPane = contentPane;
+        instance = this;
+    }
+
+    public static NavigationManager getInstance() {
+        return instance;
     }
 
     public void loadPage(String fxml) {
@@ -28,8 +35,6 @@ public class NavigationManager {
             FXMLLoader loader = new FXMLLoader(url);
 
             Node page = loader.load();
-
-            contentPane.getChildren().setAll(page);
 
             contentPane.getChildren().setAll(page);
 

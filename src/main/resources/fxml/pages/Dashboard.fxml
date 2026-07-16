@@ -6,16 +6,16 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/20"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.example.controller.DashboardController"
-            stylesheets="@../../css/dashboard.css">
+            fx:controller="org.example.controller.DashboardController">
+
 
     <!-- ================= HEADER ================= -->
 
     <top>
 
         <HBox spacing="15"
-              alignment="CENTER_LEFT"
-              styleClass="header">
+              alignment="CENTER_LEFT">
+
 
             <padding>
                 <Insets top="10" right="20" bottom="10" left="20"/>
@@ -23,18 +23,18 @@
 
             <!-- Company Logo -->
 
-            <Label text="⚙"
-                   styleClass="header-logo"/>
+            <Label text="⚙"/>
+
 
             <!-- Company Name -->
 
             <VBox spacing="2">
 
-                <Label text="JavaApp ERP"
-                       styleClass="header-title"/>
+                <Label text="DS Engineers"/>
 
-                <Label text="Industrial Management System"
-                       styleClass="header-subtitle"/>
+
+                <Label text="Industrial Management System"/>
+
 
             </VBox>
 
@@ -43,8 +43,8 @@
             <!-- Dynamic Page Title -->
 
             <Label fx:id="lblPageTitle"
-                   text="Dashboard"
-                   styleClass="module-title"/>
+                   text="Dashboard"/>
+
 
             <Region HBox.hgrow="ALWAYS"/>
 
@@ -68,8 +68,8 @@
 
             <!-- Clock -->
 
-            <Label fx:id="lblClock"
-                   styleClass="clock"/>
+            <Label fx:id="lblClock"/>
+
 
             <!-- User -->
 
@@ -98,15 +98,15 @@
     <left>
 
         <VBox spacing="10"
-              prefWidth="250"
-              styleClass="sidebar">
+              prefWidth="250">
+
 
             <padding>
                 <Insets top="20" right="10" bottom="20" left="10"/>
             </padding>
 
-            <Label text="MAIN"
-                   styleClass="sidebar-section"/>
+            <Label text="MAIN"/>
+
 
             <Button
                 fx:id="btnDashboard"
@@ -115,8 +115,8 @@
 
             <Separator/>
 
-            <Label text="MASTER"
-                   styleClass="sidebar-section"/>
+            <Label text="MASTER"/>
+
 
             <Button
                 fx:id="btnItem"
@@ -140,8 +140,8 @@
 
             <Separator/>
 
-            <Label text="TRANSACTIONS"
-                   styleClass="sidebar-section"/>
+            <Label text="TRANSACTIONS"/>
+
 
             <Button fx:id="btnInventory"
                     text="📊 Inventory"
@@ -160,8 +160,8 @@
 
             <Separator/>
 
-            <Label text="REPORTS"
-                   styleClass="sidebar-section"/>
+            <Label text="REPORTS"/>
+
 
             <Button fx:id="btnReports"
                     text="📄 Reports"
@@ -170,8 +170,8 @@
 
             <Separator/>
 
-            <Label text="SYSTEM"
-                   styleClass="sidebar-section"/>
+            <Label text="SYSTEM"/>
+
 
             <Button fx:id="btnSettings"
                     text="⚙ Settings"
@@ -186,8 +186,8 @@
 
     <center>
 
-        <StackPane fx:id="contentPane"
-                   styleClass="content"/>
+        <StackPane fx:id="contentPane"/>
+
 
     </center>
 

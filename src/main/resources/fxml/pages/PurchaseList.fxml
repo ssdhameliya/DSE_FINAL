@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.controller.PurchaseListController">
+
+    <top>
+
+        <VBox spacing="15" BorderPane.alignment="CENTER">
+
+            <padding>
+                <Insets top="15" right="15" bottom="15" left="15"/>
+            </padding>
+
+            <!-- Title -->
+
+            <Label text="Purchase Register"
+                   style="-fx-font-size:22px;-fx-font-weight:bold;"/>
+
+            <!-- Toolbar -->
+
+            <HBox spacing="10">
+
+                <Button text="➕ New Purchase"
+                        onAction="#newPurchase"/>
+
+                <Button text="📤 Export Excel"
+                        onAction="#exportPurchase"/>
+
+            </HBox>
+
+            <!-- Filters -->
+
+            <HBox spacing="10"
+                  alignment="CENTER_LEFT">
+
+                <Label text="Search"/>
+
+                <TextField fx:id="txtSearch"
+                           promptText="Invoice No / Supplier"
+                           prefWidth="220"/>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <Label text="From"/>
+
+                <DatePicker fx:id="dpFrom"/>
+
+                <Label text="To"/>
+
+                <DatePicker fx:id="dpTo"/>
+
+                <Label text="Mail Status"/>
+
+                <ComboBox fx:id="cmbMailStatus"
+                          prefWidth="130"/>
+
+            </HBox>
+
+        </VBox>
+
+    </top>
+
+    <center>
+
+        <TableView fx:id="tablePurchase">
+
+            <columns>
+
+                <TableColumn fx:id="colInvoice"
+                             text="Invoice No"
+                             prefWidth="130"/>
+
+                <TableColumn fx:id="colDate"
+                             text="Date"
+                             prefWidth="110"/>
+
+                <TableColumn fx:id="colSupplier"
+                             text="Supplier"
+                             prefWidth="220"/>
+
+                <TableColumn fx:id="colQuantity"
+                             text="Qty"
+                               prefWidth="70"/>
+
+                <TableColumn fx:id="colNetAmount"
+                             text="Net Amount"
+                             prefWidth="120"/>
+
+                <TableColumn fx:id="colGST"
+                             text="GST Amount"
+                             prefWidth="120"/>
+
+                <TableColumn fx:id="colTotal"
+                             text="Grand Total"
+                             prefWidth="120"/>
+
+                <TableColumn fx:id="colMail"
+                             text="Mail Sent"
+                             prefWidth="90"/>
+
+                <TableColumn fx:id="colCreated"
+                             text="Created At"
+                             prefWidth="170"/>
+
+                <TableColumn fx:id="colAction"
+                             text="Actions"
+                             prefWidth="380"/>
+
+            </columns>
+
+            <columnResizePolicy>
+
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+
+            </columnResizePolicy>
+
+        </TableView>
+
+    </center>
+
+</BorderPane>

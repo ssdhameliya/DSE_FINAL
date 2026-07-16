@@ -3,224 +3,1037 @@ package org.example.controller;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.util.converter.DoubleStringConverter;
+
 import org.example.model.*;
-import org.example.service.*;
+
+import org.example.navigation.NavigationManager;
+
+import org.example.service.ItemService;
+import org.example.service.NotificationService;
+import org.example.service.PartyService;
+import org.example.service.SalesService;
 
 import java.time.LocalDate;
-import java.nio.file.*;
+import java.util.List;
 
 public class SalesController {
+
     @FXML
-    private TextField txtInvoiceNo, txtQuantity, txtRate;
+    private TextField txtInvoiceNo;
+
+    @FXML
+    private TextField txtQuantity;
+
+    @FXML
+    private TextField txtRate;
+
+    @FXML
+    private TextField txtGST;
+
     @FXML
     private DatePicker dpInvoiceDate;
+
     @FXML
     private ComboBox<Party> cmbCustomer;
+
     @FXML
     private ComboBox<Item> cmbItem;
+
     @FXML
     private TextArea txtRemarks;
+
     @FXML
-    private CheckBox chkSendEmail;
+    private Label lblInvoiceDisplay;
+
     @FXML
-    private TableView<PurchaseLine> tableLines;
+    private Label lblNetAmount;
+
     @FXML
-    private TableColumn<PurchaseLine, String> colItem;
+    private Label lblGst;
+
     @FXML
-    private TableColumn<PurchaseLine, Double> colQuantity, colRate, colGst, colTotal;
+    private Label lblGrandTotal;
+
     @FXML
-    private Label lblSubtotal, lblGst, lblGrandTotal;
-    private final ItemService items = new ItemService();
-    private final PartyService parties = new PartyService();
-    private final SalesService sales = new SalesService();
-    private Sales lastSavedSale;
+    private TableView<SalesLine> tableLines;
+
+    @FXML
+    private TableColumn<SalesLine, String> colItem;
+
+    @FXML
+    private TableColumn<SalesLine, Double> colQuantity;
+
+    @FXML
+    private TableColumn<SalesLine, Double> colRate;
+
+    @FXML
+    private TableColumn<SalesLine, Double> colGst;
+
+    @FXML
+    private TableColumn<SalesLine, Double> colGstAmount;
+
+    @FXML
+    private TableColumn<SalesLine, Double> colNetAmount;
+
+    @FXML
+    private TableColumn<SalesLine, Double> colTotal;
+
+    @FXML
+    private Button btnAddLine;
+
+
+
+    @FXML
+    private Button btnSaveSale;
+
+    //-------------------------------------------------------
+    // Services
+    //-------------------------------------------------------
+
+    private final ItemService itemService =
+        new ItemService();
+
+    private final PartyService partyService =
+        new PartyService();
+
+    private final SalesService salesService =
+        new SalesService();
+
+    //-------------------------------------------------------
+    // Editing
+    //-------------------------------------------------------
+
+    private Sales editingSale = null;
+
+    private SalesLine editingLine = null;
+
+    private int editingIndex = -1;
+
+    //-------------------------------------------------------
+    // Initialize
+    //-------------------------------------------------------
 
     @FXML
     public void initialize() {
-        colItem.setCellValueFactory(new PropertyValueFactory<>("itemDescription"));
-        colQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        colRate.setCellValueFactory(new PropertyValueFactory<>("rate"));
-        colGst.setCellValueFactory(new PropertyValueFactory<>("gstPercent"));
-        colTotal.setCellValueFactory(new PropertyValueFactory<>("lineTotal"));
-        cmbCustomer.setItems(FXCollections.observableArrayList(parties.getByType("CUSTOMER")));
-        cmbItem.setItems(FXCollections.observableArrayList(items.getAll()));
-        configureItemCell();
-        configureCustomerCell();
+
+        setupTable();
+
+        setupAmountFormatting();
+
+        tableLines.setEditable(true);
+
+        setupEditableColumns();
+
+        tableLines.getSelectionModel()
+            .selectedItemProperty()
+            .addListener((obs, oldLine, newLine) -> {
+
+                if (newLine == null)
+                    return;
+
+                editingLine = newLine;
+
+                editingIndex =
+                    tableLines.getSelectionModel()
+                        .getSelectedIndex();
+
+                txtQuantity.setText(
+                    String.valueOf(
+                        newLine.getQuantity()));
+
+                txtRate.setText(
+                    String.valueOf(
+                        newLine.getRate()));
+
+                txtGST.setText(
+                    String.valueOf(
+                        newLine.getGstPercent()));
+
+                for (Item item : cmbItem.getItems()) {
+
+                    if (item.getItemCode()
+                        .equals(newLine.getItemCode())) {
+
+                        cmbItem.getSelectionModel()
+                            .select(item);
+
+                        break;
+                    }
+                }
+
+            });
+
+        //-------------------------------------------------------
+        // Load Customers
+        //-------------------------------------------------------
+
+        cmbCustomer.setItems(
+
+            FXCollections.observableArrayList(
+
+                partyService.getByType("CUSTOMER")
+
+            )
+
+        );
+
+        //-------------------------------------------------------
+        // Load Items
+        //-------------------------------------------------------
+
+        cmbItem.setItems(
+
+            FXCollections.observableArrayList(
+
+                itemService.getAll()
+
+            )
+
+        );
+
+        //-------------------------------------------------------
+        // Customer Combo
+        //-------------------------------------------------------
+
+        cmbCustomer.setCellFactory(list ->
+            new ListCell<>() {
+
+                @Override
+                protected void updateItem(
+                    Party party,
+                    boolean empty) {
+
+                    super.updateItem(party, empty);
+
+                    setText(
+
+                        empty || party == null
+
+                            ? null
+
+                            : party.getPartyCode()
+                              + " - "
+                              + party.getName()
+
+                    );
+
+                }
+
+            });
+
+        cmbCustomer.setButtonCell(
+            new ListCell<>() {
+
+                @Override
+                protected void updateItem(
+                    Party party,
+                    boolean empty) {
+
+                    super.updateItem(party, empty);
+
+                    setText(
+
+                        empty || party == null
+
+                            ? null
+
+                            : party.getPartyCode()
+                              + " - "
+                              + party.getName()
+
+                    );
+
+                }
+
+            });
+
+        //-------------------------------------------------------
+        // Item Combo
+        //-------------------------------------------------------
+
+        cmbItem.setCellFactory(list ->
+            new ListCell<>() {
+
+                @Override
+                protected void updateItem(
+                    Item item,
+                    boolean empty) {
+
+                    super.updateItem(item, empty);
+
+                    setText(
+
+                        empty || item == null
+
+                            ? null
+
+                            : item.getItemCode()
+                              + " - "
+                              + item.getDescription()
+
+                    );
+
+                }
+
+            });
+
+        cmbItem.setButtonCell(
+            new ListCell<>() {
+
+                @Override
+                protected void updateItem(
+                    Item item,
+                    boolean empty) {
+
+                    super.updateItem(item, empty);
+
+                    setText(
+
+                        empty || item == null
+
+                            ? null
+
+                            : item.getItemCode()
+                              + " - "
+                              + item.getDescription()
+
+                    );
+
+                }
+
+            });
+
         newSale();
+
     }
 
-    private void configureItemCell() {
-        cmbItem.setCellFactory(v -> new ListCell<>() {
-            @Override
-            protected void updateItem(Item i, boolean e) {
-                super.updateItem(i, e);
-                setText(e || i == null ? null : i.getItemCode() + " - " + i.getDescription() + " (Stock: " + i.getOpeningStock() + ")");
-            }
-        });
-        cmbItem.setButtonCell(new ListCell<>() {
-            @Override
-            protected void updateItem(Item i, boolean e) {
-                super.updateItem(i, e);
-                setText(e || i == null ? null : i.getItemCode() + " - " + i.getDescription());
-            }
-        });
+    //-------------------------------------------------------
+    // Setup Table
+    //-------------------------------------------------------
+
+    private void setupTable() {
+
+        colItem.setCellValueFactory(
+            new PropertyValueFactory<>("itemDescription"));
+
+        colQuantity.setCellValueFactory(
+            new PropertyValueFactory<>("quantity"));
+
+        colRate.setCellValueFactory(
+            new PropertyValueFactory<>("rate"));
+
+        colGst.setCellValueFactory(
+            new PropertyValueFactory<>("gstPercent"));
+
+        colGstAmount.setCellValueFactory(
+            new PropertyValueFactory<>("gstAmount"));
+
+        colNetAmount.setCellValueFactory(
+            new PropertyValueFactory<>("netAmount"));
+
+        colTotal.setCellValueFactory(
+            new PropertyValueFactory<>("totalAmount"));
+
     }
 
-    private void configureCustomerCell() {
-        cmbCustomer.setCellFactory(v -> new ListCell<>() {
-            @Override
-            protected void updateItem(Party p, boolean e) {
-                super.updateItem(p, e);
-                setText(e || p == null ? null : p.getPartyCode() + " - " + p.getName());
-            }
-        });
-        cmbCustomer.setButtonCell(new ListCell<>() {
-            @Override
-            protected void updateItem(Party p, boolean e) {
-                super.updateItem(p, e);
-                setText(e || p == null ? null : p.getPartyCode() + " - " + p.getName());
-            }
-        });
+    //-------------------------------------------------------
+    // Amount Formatting
+    //-------------------------------------------------------
+
+    private void setupAmountFormatting() {
+
+        colQuantity.setCellFactory(column ->
+            new TextFieldTableCell<>(
+                new DoubleStringConverter()
+            ));
+
+        colRate.setCellFactory(column ->
+            new TextFieldTableCell<>(
+                new DoubleStringConverter()
+            ));
+
+        colGst.setCellFactory(column ->
+            new TextFieldTableCell<>(
+                new DoubleStringConverter()
+            ));
+
+        colGstAmount.setCellFactory(column ->
+            new TableCell<>() {
+
+                @Override
+                protected void updateItem(Double value, boolean empty) {
+
+                    super.updateItem(value, empty);
+
+                    if (empty || value == null) {
+
+                        setText(null);
+
+                    } else {
+
+                        setText(
+                            String.format("₹ %.2f", value)
+                        );
+
+                    }
+
+                }
+
+            });
+
+        colNetAmount.setCellFactory(column ->
+            new TableCell<>() {
+
+                @Override
+                protected void updateItem(Double value, boolean empty) {
+
+                    super.updateItem(value, empty);
+
+                    if (empty || value == null) {
+
+                        setText(null);
+
+                    } else {
+
+                        setText(
+                            String.format("₹ %.2f", value)
+                        );
+
+                    }
+
+                }
+
+            });
+
+        colTotal.setCellFactory(column ->
+            new TableCell<>() {
+
+                @Override
+                protected void updateItem(Double value, boolean empty) {
+
+                    super.updateItem(value, empty);
+
+                    if (empty || value == null) {
+
+                        setText(null);
+
+                    } else {
+
+                        setText(
+                            String.format("₹ %.2f", value)
+                        );
+
+                    }
+
+                }
+
+            });
+
     }
 
-    @FXML
-    private void addLine() {
-        Item i = cmbItem.getValue();
-        if (i == null) {
-            warn("Select an item.");
-            return;
-        }
-        double q, r;
-        try {
-            q = Double.parseDouble(txtQuantity.getText());
-            r = Double.parseDouble(txtRate.getText());
-        } catch (Exception e) {
-            warn("Enter valid quantity and rate.");
-            return;
-        }
-        if (q <= 0 || r < 0) {
-            warn("Quantity must be positive and rate cannot be negative.");
-            return;
-        }
-        if (q > i.getOpeningStock()) {
-            warn("Only " + i.getOpeningStock() + " units are available.");
-            return;
-        }
-        PurchaseLine l = new PurchaseLine();
-        l.setItemCode(i.getItemCode());
-        l.setItemDescription(i.getItemCode() + " - " + i.getDescription());
-        l.setQuantity(q);
-        l.setRate(r);
-        l.setGstPercent(i.getGst());
-        l.setLineTotal(q * r * (1 + i.getGst() / 100));
-        tableLines.getItems().add(l);
-        cmbItem.setValue(null);
-        txtQuantity.clear();
-        txtRate.clear();
-        recalculate();
+    //-------------------------------------------------------
+    // Editable Columns
+    //-------------------------------------------------------
+
+    private void setupEditableColumns() {
+
+        colQuantity.setCellFactory(
+            TextFieldTableCell.forTableColumn(
+                new DoubleStringConverter()
+            ));
+
+        colQuantity.setOnEditCommit(event -> {
+
+            SalesLine line = event.getRowValue();
+
+            line.setQuantity(event.getNewValue());
+
+            recalculateLine(line);
+
+            tableLines.refresh();
+
+            recalculate();
+
+        });
+
+        colRate.setCellFactory(
+            TextFieldTableCell.forTableColumn(
+                new DoubleStringConverter()
+            ));
+
+        colRate.setOnEditCommit(event -> {
+
+            SalesLine line = event.getRowValue();
+
+            line.setRate(event.getNewValue());
+
+            recalculateLine(line);
+
+            tableLines.refresh();
+
+            recalculate();
+
+        });
+
+        colGst.setCellFactory(
+            TextFieldTableCell.forTableColumn(
+                new DoubleStringConverter()
+            ));
+
+        colGst.setOnEditCommit(event -> {
+
+            SalesLine line = event.getRowValue();
+
+            line.setGstPercent(event.getNewValue());
+
+            recalculateLine(line);
+
+            tableLines.refresh();
+
+            recalculate();
+
+        });
+
     }
 
-    @FXML
-    private void removeLine() {
-        PurchaseLine l = tableLines.getSelectionModel().getSelectedItem();
-        if (l == null) {
-            warn("Select a line to remove.");
-            return;
-        }
-        tableLines.getItems().remove(l);
-        recalculate();
+    //-------------------------------------------------------
+    // Recalculate One Line
+    //-------------------------------------------------------
+
+    private void recalculateLine(SalesLine line) {
+
+        double net =
+            line.getQuantity()
+                * line.getRate();
+
+        double gst =
+            net
+                * line.getGstPercent()
+                / 100;
+
+        double total =
+            net + gst;
+
+        line.setNetAmount(net);
+
+        line.setGstAmount(gst);
+
+        line.setTotalAmount(total);
+
     }
+
+    //--------------------------------------------------
+// SAVE SALE
+//--------------------------------------------------
 
     @FXML
     private void saveSale() {
-        if (cmbCustomer.getValue() == null) {
-            warn("Select a customer.");
+
+        Sales sale = buildSale();
+
+        if (sale == null)
             return;
-        }
-        if (tableLines.getItems().isEmpty()) {
-            warn("Add at least one item.");
-            return;
-        }
-        double sub = tableLines.getItems().stream().mapToDouble(l -> l.getQuantity() * l.getRate()).sum(), total = tableLines.getItems().stream().mapToDouble(PurchaseLine::getLineTotal).sum();
-        Sales invoice = new Sales();
-        invoice.setInvoiceNo(txtInvoiceNo.getText());
-        invoice.setInvoiceDate(dpInvoiceDate.getValue());
-        invoice.setCustomer(cmbCustomer.getValue());
-        invoice.setLines(java.util.List.copyOf(tableLines.getItems()));
-        invoice.setSubtotal(sub);
-        invoice.setGstAmount(total - sub);
-        invoice.setTotalAmount(total);
-        invoice.setRemarks(txtRemarks.getText().trim());
+
         try {
-            sales.save(invoice);
-            lastSavedSale = invoice;
-            if (chkSendEmail.isSelected()) {
-                NotificationService.add("Sales invoice " + invoice.getInvoiceNo() + " is waiting to be emailed.");
+
+            if (editingSale != null) {
+
+                sale.setId(editingSale.getId());
+
+                salesService.update(sale);
+
+                NotificationService.add(
+                    "Sales "
+                        + sale.getInvoiceNo()
+                        + " updated"
+                );
+
+            } else {
+
+                salesService.save(sale);
+
+                NotificationService.add(
+                    "Sales "
+                        + sale.getInvoiceNo()
+                        + " saved"
+                );
+
             }
-            NotificationService.add("Sales invoice " + invoice.getInvoiceNo() + " was saved.");
-            new Alert(Alert.AlertType.INFORMATION, chkSendEmail.isSelected() ? "Sales saved. Email is marked pending; click Send Invoice Email when ready." : "Sales saved. Email was not requested.").showAndWait();
-        } catch (Exception e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).showAndWait();
+
+            new Alert(
+                Alert.AlertType.INFORMATION,
+                "Sales saved successfully"
+            ).showAndWait();
+
+            NavigationManager.getInstance()
+                .loadPage("/fxml/pages/SalesList.fxml");
+
         }
+        catch (Exception e) {
+
+            new Alert(
+                Alert.AlertType.ERROR,
+                e.getMessage()
+            ).showAndWait();
+
+        }
+
     }
 
-    @FXML
-    private void sendInvoiceEmail() {
-        if (lastSavedSale == null) {
-            warn("Save the sales invoice first, then send its email.");
-            return;
+
+//--------------------------------------------------
+// BUILD SALES OBJECT
+//--------------------------------------------------
+
+    private Sales buildSale() {
+
+        if (dpInvoiceDate.getValue() == null) {
+
+            warn("Select invoice date");
+
+            return null;
+
         }
-        if (!chkSendEmail.isSelected()) {
-            warn("Tick 'Email requested' before sending. This keeps email delivery under your control.");
-            return;
+
+        if (cmbCustomer.getValue() == null) {
+
+            warn("Select customer");
+
+            return null;
+
         }
-        String email = lastSavedSale.getCustomer().getEmail();
-        if (email == null || email.isBlank()) {
-            warn("The selected customer does not have an email address.");
-            return;
+
+        if (tableLines.getItems().isEmpty()) {
+
+            warn("Add items");
+
+            return null;
+
         }
-        try {
-            Path pdf = InvoicePdfService.sale(lastSavedSale);
-            EmailService.send(email, "Sales invoice " + lastSavedSale.getInvoiceNo(), "Please find your tax invoice attached.", pdf);
-            Files.deleteIfExists(pdf);
-            chkSendEmail.setText("Email sent ✓");
-            chkSendEmail.setDisable(true);
-            NotificationService.add("Sales invoice " + lastSavedSale.getInvoiceNo() + " was emailed to " + email + ".");
-            new Alert(Alert.AlertType.INFORMATION, "Invoice emailed to " + email + ".").showAndWait();
-        } catch (Exception e) {
-            NotificationService.add("Sales invoice " + lastSavedSale.getInvoiceNo() + " email could not be sent.");
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).showAndWait();
-        }
+
+        Sales sale = new Sales();
+
+        sale.setInvoiceNo(
+            txtInvoiceNo.getText()
+        );
+
+        sale.setInvoiceDate(
+            dpInvoiceDate.getValue()
+        );
+
+        sale.setCustomer(
+            cmbCustomer.getValue()
+        );
+
+        sale.setLines(
+            List.copyOf(
+                tableLines.getItems()
+            )
+        );
+
+        double net =
+            tableLines.getItems()
+                .stream()
+                .mapToDouble(
+                    SalesLine::getNetAmount
+                )
+                .sum();
+
+        double gst =
+            tableLines.getItems()
+                .stream()
+                .mapToDouble(
+                    SalesLine::getGstAmount
+                )
+                .sum();
+
+        double total =
+            net + gst;
+
+        sale.setSubtotal(net);
+
+        sale.setGstAmount(gst);
+
+        sale.setTotalAmount(total);
+
+        sale.setRemarks(
+            txtRemarks.getText()
+        );
+
+        return sale;
+
     }
+
+
+//--------------------------------------------------
+// NEW SALE
+//--------------------------------------------------
 
     @FXML
     private void newSale() {
-        txtInvoiceNo.setText(sales.nextInvoiceNo());
-        dpInvoiceDate.setValue(LocalDate.now());
+
+        editingSale = null;
+
+        txtInvoiceNo.setText(
+            salesService.nextInvoiceNo()
+        );
+
+        dpInvoiceDate.setValue(
+            LocalDate.now()
+        );
+
         cmbCustomer.setValue(null);
+
         cmbItem.setValue(null);
+
         txtQuantity.clear();
+
         txtRate.clear();
+
+        txtGST.clear();
+
         txtRemarks.clear();
-        chkSendEmail.setSelected(false);
-        chkSendEmail.setDisable(false);
-        chkSendEmail.setText("Email requested (send manually)");
+
         tableLines.getItems().clear();
-        lastSavedSale = null;
+
         recalculate();
+
     }
+    //--------------------------------------------------
+// RECALCULATE TOTALS
+//--------------------------------------------------
 
     private void recalculate() {
-        double sub = tableLines.getItems().stream().mapToDouble(l -> l.getQuantity() * l.getRate()).sum(), tot = tableLines.getItems().stream().mapToDouble(PurchaseLine::getLineTotal).sum();
-        lblSubtotal.setText(String.format("₹ %.2f", sub));
-        lblGst.setText(String.format("₹ %.2f", tot - sub));
-        lblGrandTotal.setText(String.format("₹ %.2f", tot));
+
+        double net =
+            tableLines.getItems()
+                .stream()
+                .mapToDouble(
+                    SalesLine::getNetAmount
+                )
+                .sum();
+
+        double gst =
+            tableLines.getItems()
+                .stream()
+                .mapToDouble(
+                    SalesLine::getGstAmount
+                )
+                .sum();
+
+        double total =
+            net + gst;
+
+        lblNetAmount.setText(
+            String.format("₹ %.2f", net)
+        );
+
+        lblGst.setText(
+            String.format("₹ %.2f", gst)
+        );
+
+        lblGrandTotal.setText(
+            String.format("₹ %.2f", total)
+        );
+
     }
 
-    private void warn(String s) {
-        Alert a = new Alert(Alert.AlertType.WARNING, s);
-        a.setHeaderText(null);
-        a.showAndWait();
+
+//--------------------------------------------------
+// WARNING
+//--------------------------------------------------
+
+    private void warn(String msg) {
+
+        new Alert(
+            Alert.AlertType.WARNING,
+            msg
+        ).showAndWait();
+
     }
+
+
+//--------------------------------------------------
+// CANCEL
+//--------------------------------------------------
+
+    @FXML
+    private void cancel() {
+
+        NavigationManager.getInstance()
+            .loadPage("/fxml/pages/SalesList.fxml");
+
+    }
+
+
+//--------------------------------------------------
+// LOAD SALE FOR EDIT
+//--------------------------------------------------
+
+    public void loadSale(Sales sale) {
+
+        System.out.println(
+            "Invoice = " + sale.getInvoiceNo()
+        );
+
+        editingSale = sale;
+
+        txtInvoiceNo.setText(
+            sale.getInvoiceNo()
+        );
+
+        lblInvoiceDisplay.setText(
+            sale.getInvoiceNo()
+        );
+
+        dpInvoiceDate.setValue(
+            sale.getInvoiceDate()
+        );
+
+        // Select customer
+
+        if (sale.getCustomer() != null) {
+
+            for (Party party : cmbCustomer.getItems()) {
+
+                if (party.getId()
+                    == sale.getCustomer().getId()) {
+
+                    cmbCustomer.getSelectionModel()
+                        .select(party);
+
+                    break;
+
+                }
+
+            }
+
+        }
+
+        txtRemarks.setText(
+
+            sale.getRemarks() == null
+
+                ? ""
+
+                : sale.getRemarks()
+
+        );
+
+        tableLines.getItems().clear();
+
+        if (sale.getLines() != null) {
+
+            tableLines.getItems()
+                .addAll(
+                    sale.getLines()
+                );
+
+        }
+
+        recalculate();
+
+    }
+
+
+//--------------------------------------------------
+// VIEW MODE
+//--------------------------------------------------
+
+    public void setViewMode(boolean value) {
+
+        txtInvoiceNo.setDisable(value);
+
+        dpInvoiceDate.setDisable(value);
+
+        cmbCustomer.setDisable(value);
+
+        cmbItem.setDisable(value);
+
+        txtQuantity.setDisable(value);
+
+        txtRate.setDisable(value);
+
+        txtGST.setDisable(value);
+
+        txtRemarks.setDisable(value);
+
+        btnAddLine.setDisable(value);
+
+        btnSaveSale.setDisable(value);
+
+        tableLines.setDisable(value);
+
+    }
+    @FXML
+    private void addLine(){
+
+
+        Item item = cmbItem.getValue();
+
+
+        if(item==null){
+
+            warn("Select item");
+
+            return;
+        }
+
+
+
+        try{
+
+
+            double qty =
+                Double.parseDouble(txtQuantity.getText());
+
+
+            double rate =
+                Double.parseDouble(txtRate.getText());
+
+
+            double gst =
+                item.getGst();
+
+
+
+            if(txtGST.getText()!=null &&
+                !txtGST.getText().isBlank()){
+
+                gst =
+                    Double.parseDouble(txtGST.getText());
+
+            }
+
+
+
+            double net =
+                qty * rate;
+
+
+            double gstAmount =
+                net * gst / 100;
+
+
+            double total =
+                net + gstAmount;
+
+
+
+            SalesLine line =
+                new SalesLine();
+
+
+            line.setItemCode(
+                item.getItemCode()
+            );
+
+
+            line.setItemDescription(
+                item.getItemCode()
+                    +" - "
+                    +item.getDescription()
+            );
+
+
+            line.setQuantity(qty);
+
+
+            line.setRate(rate);
+
+
+            line.setGstPercent(gst);
+
+
+            line.setNetAmount(net);
+
+
+            line.setGstAmount(gstAmount);
+
+
+            line.setTotalAmount(total);
+
+
+
+            if(editingLine == null){
+
+                tableLines.getItems().add(line);
+
+            }else{
+
+                tableLines.getItems().set(editingIndex, line);
+
+                editingLine = null;
+                editingIndex = -1;
+
+            }
+
+
+
+            cmbItem.setValue(null);
+
+            txtQuantity.clear();
+
+            txtRate.clear();
+
+            txtGST.clear();
+            tableLines.getSelectionModel().clearSelection();
+
+
+            recalculate();
+
+
+
+        }
+        catch(Exception e){
+
+            warn("Enter valid quantity and rate");
+
+        }
+
+    }
+
+    @FXML
+    private void cancelEdit() {
+
+        editingLine = null;
+        editingIndex = -1;
+
+        cmbItem.setValue(null);
+
+        txtQuantity.clear();
+        txtRate.clear();
+        txtGST.clear();
+
+        tableLines.getSelectionModel().clearSelection();
+
+        btnAddLine.setText("+ Add Line");
+    }
+
+
+
+    @FXML
+    private void removeLine(){
+
+        SalesLine line =
+            tableLines
+                .getSelectionModel()
+                .getSelectedItem();
+
+
+        if(line!=null){
+
+            tableLines.getItems().remove(line);
+
+            recalculate();
+
+        }
+
+    }
+
+
 }

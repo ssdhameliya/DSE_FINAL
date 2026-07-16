@@ -7,16 +7,14 @@ import java.util.Properties;
 
 public final class ConfigManager {
 
-    private static final String CONFIG_FOLDER =
-            System.getProperty("user.home") + File.separator + ".javaapp";
+    private static final String CONFIG_FOLDER = "D:\\JavaProject";
 
     private static final String CONFIG_FILE =
-            CONFIG_FOLDER + File.separator + "config.properties";
+        CONFIG_FOLDER + File.separator + "config.properties";
 
     private static final Properties properties = new Properties();
 
-    private ConfigManager() {
-    }
+    private ConfigManager() {}
 
     public static void load() {
 
@@ -36,6 +34,32 @@ public final class ConfigManager {
                     properties.load(fis);
                 }
 
+            } else {
+
+                // Create default config file
+                save();
+
+            }
+
+            System.out.println("Config File : " + file.getAbsolutePath());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void save() {
+
+        try {
+
+            File folder = new File(CONFIG_FOLDER);
+
+            if (!folder.exists()) {
+                folder.mkdirs();
+            }
+
+            try (FileOutputStream fos = new FileOutputStream(CONFIG_FILE)) {
+                properties.store(fos, "JavaApp ERP Configuration");
             }
 
         } catch (IOException e) {
@@ -44,31 +68,12 @@ public final class ConfigManager {
 
     }
 
-    public static void save() {
-
-        try (FileOutputStream fos = new FileOutputStream(CONFIG_FILE)) {
-
-            properties.store(fos, "JavaApp ERP Configuration");
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
-
-        }
-
-    }
-
     public static String get(String key, String defaultValue) {
-
         return properties.getProperty(key, defaultValue);
-
     }
 
     public static void set(String key, String value) {
-
         properties.setProperty(key, value);
         save();
-
     }
-
 }

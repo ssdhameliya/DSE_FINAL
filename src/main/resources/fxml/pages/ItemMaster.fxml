@@ -1,47 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <BorderPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.example.controller.ItemMasterController">
+            fx:controller="org.example.controller.ItemMasterController"
+            styleClass="page-root">
 
-    <!-- ========================= TOP ========================= -->
+    <!-- ================= TOP ================= -->
 
     <top>
 
-        <VBox spacing="15" style="-fx-padding:20;">
+        <VBox spacing="18"
+              styleClass="page-header">
 
-            <HBox alignment="CENTER_LEFT" spacing="15">
+            <HBox alignment="CENTER_LEFT"
+                  spacing="15">
 
                 <Label text="📦 Item Master"
-                       style="-fx-font-size:24px;
-                              -fx-font-weight:bold;"/>
+                       styleClass="page-title"/>
 
                 <Pane HBox.hgrow="ALWAYS"/>
 
                 <TextField fx:id="txtSearch"
                            promptText="Search Item..."
-                           prefWidth="250"/>
+                           prefWidth="260"
+                           styleClass="search-field"/>
 
             </HBox>
 
-            <HBox spacing="10">
+            <HBox spacing="10"
+                  styleClass="toolbar">
 
                 <Button text="➕ New Item"
+                        styleClass="primary-button"
                         onAction="#newItem"/>
 
-                <Button text="✏ Edit" onAction="#editItem"/>
+                <Button text="✏ Edit"
+                        onAction="#editItem"/>
 
-                <Button text="🗑 Delete" onAction="#deleteItem"/>
+                <Button text="🗑 Delete"
+                        onAction="#deleteItem"/>
 
-                <Button text="🔄 Refresh" onAction="#refresh"/>
+                <Button text="🔄 Refresh"
+                        onAction="#refresh"/>
 
-                <Button text="📥 Import" onAction="#importItems"/>
+                <Button text="📥 Import"
+                        onAction="#importItems"/>
 
-                <Button text="📤 Export" onAction="#exportItems"/>
+                <Button text="📤 Export"
+                        onAction="#exportItems"/>
 
             </HBox>
 
@@ -49,60 +58,64 @@
 
     </top>
 
-    <!-- ========================= CENTER ========================= -->
+    <!-- ================= CENTER ================= -->
 
     <center>
 
-        <TableView fx:id="tableItems"
-                   VBox.vgrow="ALWAYS">
+        <StackPane styleClass="table-card">
 
-            <columns>
+            <TableView fx:id="tableItems">
 
-                <TableColumn fx:id="colCode"
-                             text="Code"
-                             prefWidth="120"/>
+                <columns>
 
-                <TableColumn fx:id="colDescription"
-                             text="Description"
-                             prefWidth="250"/>
+                    <TableColumn fx:id="colCode"
+                                 text="Code"
+                                 prefWidth="120"/>
 
-                <TableColumn fx:id="colCategory"
-                             text="Category"
-                             prefWidth="150"/>
+                    <TableColumn fx:id="colDescription"
+                                 text="Description"
+                                 prefWidth="260"/>
 
-                <TableColumn fx:id="colBrand"
-                             text="Brand"
-                             prefWidth="150"/>
+                    <TableColumn fx:id="colCategory"
+                                 text="Category"
+                                 prefWidth="150"/>
 
-                <TableColumn fx:id="colStock"
-                             text="Stock"
-                             prefWidth="100"/>
+                    <TableColumn fx:id="colBrand"
+                                 text="Brand"
+                                 prefWidth="150"/>
 
-                <TableColumn fx:id="colUnit"
-                             text="Unit"
-                             prefWidth="100"/>
+                    <TableColumn fx:id="colStock"
+                                 text="Stock"
+                                 prefWidth="100"/>
 
-                <TableColumn fx:id="colAction"
-                             text="Action"
-                             prefWidth="120"/>
+                    <TableColumn fx:id="colUnit"
+                                 text="Unit"
+                                 prefWidth="100"/>
 
-            </columns>
+                    <TableColumn fx:id="colAction"
+                                 text="Action"
+                                 prefWidth="120"/>
 
-        </TableView>
+                </columns>
+
+            </TableView>
+
+        </StackPane>
 
     </center>
 
-    <!-- ========================= BOTTOM ========================= -->
+    <!-- ================= BOTTOM ================= -->
 
     <bottom>
 
-        <HBox alignment="CENTER_RIGHT"
-              spacing="10"
-              style="-fx-padding:12 20;">
+        <HBox spacing="8"
+              alignment="CENTER_RIGHT"
+              styleClass="status-bar">
 
-            <Label text="Records :"/>
+            <Label text="Records"/>
 
             <Label fx:id="lblRecordCount"
+                   styleClass="status-value"
                    text="0"/>
 
         </HBox>

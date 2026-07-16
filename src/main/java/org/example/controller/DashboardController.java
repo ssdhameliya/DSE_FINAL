@@ -213,15 +213,15 @@ public class DashboardController {
     private void openPurchase() {
         openPage(btnPurchase,
             "Purchase",
-            "/fxml/pages/Purchase.fxml");
+            "/fxml/pages/PurchaseList.fxml");
 
     }
 
     @FXML
     private void openSales() {
         openPage(btnSales,
-            "OpenSales",
-            "/fxml/pages/Opensales.fxml");
+            "Sales",
+            "/fxml/pages/SalesList.fxml");
 
     }
 
@@ -247,7 +247,7 @@ public class DashboardController {
         openPage(
             btnMasters,
             "Masters",
-            "/fxml/pages/MasterData.fxml"
+            "/fxml/pages/Masterdata.fxml"
         );
 
     }
