@@ -15,8 +15,7 @@ public class SceneManager {
 
     private static Stage primaryStage;
 
-    private static final double WIDTH = 1400;
-    private static final double HEIGHT = 850;
+
 
     private SceneManager() {
     }
@@ -30,13 +29,13 @@ public class SceneManager {
 
     }
 
-    public static void showSplash() { load("/fxml/pages/login.fxml");
+    public static void showSplash() { load("/fxml/pages/Dashboard.fxml");
     }
 
     public static void showLogin() {load("/fxml/pages/Login.fxml");
     }
     public static void showRegistration() {load("/fxml/pages/Registration.fxml");}
-    public static void showEmailSettings() {load("/fxml/pages/EmailSettings.fxml");}
+
 
     public static void showDashboard() {
         load("/fxml/pages/Dashboard.fxml");
@@ -46,7 +45,13 @@ public class SceneManager {
 
         try {
 
-            FXMLLoader loader = new FXMLLoader(SceneManager.class.getResource(fxml));
+            System.out.println("Loading FXML: " + fxml);
+
+            var url = SceneManager.class.getResource(fxml);
+
+            System.out.println("URL = " + url);
+
+            FXMLLoader loader = new FXMLLoader(url);
 
             Parent root = loader.load();
 
@@ -60,11 +65,17 @@ public class SceneManager {
 
             primaryStage.show();
 
-        } catch (IOException e) {
+        } catch (Exception e) {
 
             e.printStackTrace();
 
         }
+
+    }
+
+    public static void showPurchaseList() {
+
+        load("/fxml/pages/PurchaseList.fxml");
 
     }
 

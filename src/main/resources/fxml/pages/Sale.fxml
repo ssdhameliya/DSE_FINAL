@@ -6,11 +6,12 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/20"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.example.controller.PurchaseController"
+            fx:controller="org.example.controller.SalesController"
             styleClass="page-background">
 
-
+    <!-- ========================= -->
     <!-- HEADER -->
+    <!-- ========================= -->
 
     <top>
 
@@ -24,10 +25,9 @@
                         left="25"/>
             </padding>
 
-
             <HBox alignment="CENTER_LEFT">
 
-                <Label text="Purchase Invoice"
+                <Label text="Sales Invoice"
                        styleClass="page-title"/>
 
                 <Region HBox.hgrow="ALWAYS"/>
@@ -37,10 +37,8 @@
 
             </HBox>
 
-
             <GridPane hgap="15"
                       vgap="12">
-
 
                 <columnConstraints>
 
@@ -54,62 +52,52 @@
 
                 </columnConstraints>
 
-
+                <!-- Invoice -->
 
                 <Label text="Invoice No"
                        GridPane.rowIndex="0"
                        GridPane.columnIndex="0"/>
-
 
                 <TextField fx:id="txtInvoiceNo"
                            editable="false"
                            GridPane.rowIndex="0"
                            GridPane.columnIndex="1"/>
 
-
+                <!-- Date -->
 
                 <Label text="Date"
                        GridPane.rowIndex="0"
                        GridPane.columnIndex="2"/>
 
-
                 <DatePicker fx:id="dpInvoiceDate"
                             GridPane.rowIndex="0"
                             GridPane.columnIndex="3"/>
 
+                <!-- Customer -->
 
-
-                <Label text="Supplier"
+                <Label text="Customer"
                        GridPane.rowIndex="1"
-                        GridPane.columnIndex="0"/>
+                       GridPane.columnIndex="0"/>
 
-
-                <ComboBox fx:id="cmbSupplier"
+                <ComboBox fx:id="cmbCustomer"
                           prefWidth="300"
                           GridPane.rowIndex="1"
                           GridPane.columnIndex="1"
                           GridPane.columnSpan="3"/>
 
-
             </GridPane>
-
 
         </VBox>
 
-
     </top>
 
-
-
-
+    <!-- ========================= -->
     <!-- CENTER -->
-
+    <!-- ========================= -->
 
     <center>
 
-
         <VBox spacing="15">
-
 
             <padding>
 
@@ -119,21 +107,15 @@
 
             </padding>
 
-
-
-
             <TitledPane text="Item Entry"
                         expanded="true"
                         collapsible="false"
                         styleClass="section-box">
 
-
                 <content>
-
 
                     <HBox spacing="12"
                           alignment="CENTER_LEFT">
-
 
                         <padding>
 
@@ -144,115 +126,89 @@
 
                         </padding>
 
-
-
                         <ComboBox fx:id="cmbItem"
                                   promptText="Select Item"
                                   prefWidth="320"/>
-
-
 
                         <TextField fx:id="txtQuantity"
                                    promptText="Qty"
                                    prefWidth="90"/>
 
-
-
                         <TextField fx:id="txtRate"
                                    promptText="Rate"
                                    prefWidth="120"/>
-
 
                         <TextField fx:id="txtGST"
                                    promptText="GST %"
                                    prefWidth="100"/>
 
-                        <Button
-                            fx:id="btnAddLine"
-                            text="+ Add Line"
-                            onAction="#addLine"
-                            styleClass="primary-button">
-                        </Button>
+                        <Button fx:id="btnAddLine"
+                                text="+ Add Line"
+                                onAction="#addLine"
+                                styleClass="primary-button"/>
 
-                        <Button
-                            text="Cancel Edit"
-                            onAction="#cancelEdit">
-                        </Button>
+                        <Button text="Cancel Edit"
+                                onAction="#cancelEdit"/>
 
                         <Button text="Remove"
                                 onAction="#removeLine"
                                 styleClass="danger-button"/>
 
-
                     </HBox>
-
 
                 </content>
 
-
             </TitledPane>
 
-
-
+            <!-- ========================= -->
+            <!-- ITEM TABLE -->
+            <!-- ========================= -->
 
             <TableView fx:id="tableLines"
                        VBox.vgrow="ALWAYS"
                        styleClass="erp-table">
 
-
                 <columns>
-
 
                     <TableColumn fx:id="colItem"
                                  text="Item"
                                  prefWidth="300"/>
 
-
                     <TableColumn fx:id="colQuantity"
                                  text="Qty"
                                  prefWidth="80"/>
-
 
                     <TableColumn fx:id="colRate"
                                  text="Rate"
                                  prefWidth="120"/>
 
-
                     <TableColumn fx:id="colGst"
                                  text="GST %"
                                  prefWidth="100"/>
-
 
                     <TableColumn fx:id="colGstAmount"
                                  text="GST Amount"
                                  prefWidth="140"/>
 
-
                     <TableColumn fx:id="colNetAmount"
                                  text="Net Amount"
                                  prefWidth="140"/>
-
 
                     <TableColumn fx:id="colTotal"
                                  text="Total Amount"
                                  prefWidth="150"/>
 
-
                 </columns>
-
 
             </TableView>
 
-
-
-
-
+            <!-- ========================= -->
             <!-- SUMMARY -->
+            <!-- ========================= -->
 
             <HBox alignment="CENTER_RIGHT"
                   spacing="30"
                   styleClass="summary-box">
-
 
                 <VBox>
 
@@ -264,8 +220,6 @@
 
                 </VBox>
 
-
-
                 <VBox>
 
                     <Label text="GST Amount"
@@ -275,9 +229,6 @@
                            styleClass="summary-value"/>
 
                 </VBox>
-
-
-
 
                 <VBox>
 
@@ -289,40 +240,28 @@
 
                 </VBox>
 
-
-
             </HBox>
 
-
-
+            <!-- ========================= -->
+            <!-- REMARKS -->
+            <!-- ========================= -->
 
             <Label text="Remarks"/>
-
 
             <TextArea fx:id="txtRemarks"
                       prefRowCount="3"/>
 
-
-
         </VBox>
 
-
-
     </center>
-
-
-
-
-
+    <!-- ========================= -->
     <!-- FOOTER -->
-
+    <!-- ========================= -->
 
     <bottom>
 
-
         <HBox alignment="CENTER_RIGHT"
               spacing="15">
-
 
             <padding>
 
@@ -332,23 +271,16 @@
 
             </padding>
 
-
-
             <Button text="Cancel"
                     onAction="#cancel"
                     styleClass="secondary-button"/>
 
-
-
-            <Button text="💾 Save Purchase"
-                    onAction="#savePurchase"
+            <Button text="💾 Save Sale"
+                    onAction="#saveSale"
                     styleClass="success-button"/>
-
 
         </HBox>
 
-
     </bottom>
-
 
 </BorderPane>

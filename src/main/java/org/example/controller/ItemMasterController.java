@@ -19,6 +19,7 @@ import org.example.service.ItemSpreadsheetService;
 import org.example.service.NotificationService;
 
 import java.io.File;
+import java.net.URL;
 import java.nio.file.Path;
 import java.util.Locale;
 
@@ -74,8 +75,13 @@ public class ItemMasterController {
 
         try {
 
-            FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/fxml/pages/ItemDialog.fxml"));
+            URL url = getClass().getResource("/fxml/pages/Itemdialog.fxml");
+
+            if (url == null) {
+                throw new RuntimeException("Itemdialog.fxml not found");
+            }
+
+            FXMLLoader loader = new FXMLLoader(url);
 
             Parent root = loader.load();
 

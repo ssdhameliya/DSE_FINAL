@@ -13,6 +13,7 @@ import org.example.model.Lookup;
 import org.example.service.LookupService;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Locale;
 
 public class MasterDataController {
@@ -86,10 +87,13 @@ public class MasterDataController {
 
         try {
 
-            FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/fxml/pages/LookupDialog.fxml")
+            URL url = getClass().getResource("/fxml/pages/lookupDialog.fxml");
 
-            );
+            if (url == null) {
+                throw new RuntimeException("Itemdialog.fxml not found");
+            }
+
+            FXMLLoader loader = new FXMLLoader(url);
 
             Parent root = loader.load();
 

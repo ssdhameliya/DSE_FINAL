@@ -58,8 +58,10 @@ public final class EmailService {
                 message.setContent(multipart);
             }
             Transport.send(message);
-        } catch (Exception ex) {
-            throw new IllegalStateException("Email could not be sent. Check the Yahoo email address and app password.", ex);
+        } catch (Exception e) {
+            e.printStackTrace();   // <-- add this
+            throw new RuntimeException(
+                "Email could not be sent.\n\n" + e.getMessage(), e);
         }
     }
 }

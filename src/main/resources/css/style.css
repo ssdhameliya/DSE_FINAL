@@ -1,0 +1,248 @@
+/* PAGE */
+
+.page-background {
+
+    -fx-background-color:#F8FAFC;
+
+}
+
+
+
+/* CARD */
+
+.card {
+
+    -fx-background-color:white;
+
+    -fx-background-radius:12;
+
+    -fx-effect:
+        dropshadow(three-pass-box,
+        rgba(0,0,0,0.12),
+        10,0,0,3);
+
+}
+
+
+
+/* TITLE */
+
+
+.page-title {
+
+    -fx-font-size:26px;
+
+    -fx-font-weight:bold;
+
+    -fx-text-fill:#1E293B;
+
+}
+
+
+
+.invoice-badge {
+
+    -fx-background-color:#2563EB;
+
+    -fx-text-fill:white;
+
+    -fx-padding:8 15 8 15;
+
+    -fx-background-radius:20;
+
+    -fx-font-weight:bold;
+
+}
+
+
+
+
+
+/* SECTION */
+
+
+.section-box {
+
+    -fx-background-color:white;
+
+}
+
+
+
+
+/* BUTTONS */
+
+
+.primary-button {
+
+    -fx-background-color:#2563EB;
+
+    -fx-text-fill:white;
+
+    -fx-background-radius:8;
+
+    -fx-font-weight:bold;
+
+}
+
+
+
+.success-button {
+
+
+    -fx-background-color:#16A34A;
+
+    -fx-text-fill:white;
+
+    -fx-background-radius:8;
+
+    -fx-font-weight:bold;
+
+    -fx-padding:10 25;
+
+}
+
+
+
+.danger-button {
+
+
+    -fx-background-color:#DC2626;
+
+    -fx-text-fill:white;
+
+    -fx-background-radius:8;
+
+}
+
+
+
+.secondary-button {
+
+
+    -fx-background-color:#E2E8F0;
+
+    -fx-text-fill:#334155;
+
+    -fx-background-radius:8;
+
+}
+
+
+
+
+
+/* TABLE */
+
+
+.erp-table {
+
+    -fx-background-color:white;
+
+    -fx-border-radius:10;
+
+}
+
+
+
+.erp-table .column-header {
+
+
+    -fx-background-color:#1E293B;
+
+    -fx-text-fill:white;
+
+    -fx-font-weight:bold;
+
+}
+
+
+
+.erp-table .table-row-cell {
+
+    -fx-cell-size:35px;
+
+}
+
+
+
+
+
+/* SUMMARY */
+
+
+.summary-box {
+
+
+    -fx-background-color:white;
+
+    -fx-padding:15;
+
+    -fx-background-radius:10;
+
+    -fx-effect:
+        dropshadow(three-pass-box,
+        rgba(0,0,0,0.10),
+        8,0,0,2);
+
+}
+
+
+
+.summary-label {
+
+
+    -fx-text-fill:#64748B;
+
+}
+
+
+
+.summary-value {
+
+
+    -fx-font-size:16px;
+
+    -fx-font-weight:bold;
+
+    -fx-text-fill:#0F172A;
+
+}
+
+
+
+.total-label {
+
+
+    -fx-text-fill:#16A34A;
+
+    -fx-font-weight:bold;
+
+}
+
+
+
+.total-value {
+
+
+    -fx-font-size:22px;
+
+    -fx-font-weight:bold;
+
+    -fx-text-fill:#16A34A;
+
+}
+
+
+
+/* INPUTS */
+
+
+.text-field,
+.combo-box,
+.date-picker {
+
+
+    -fx-background-radius:8;
+
+}
