@@ -214,6 +214,39 @@
 
             </plugin>
 
+            <plugin>
+                <groupId>org.panteleyev</groupId>
+                <artifactId>jpackage-maven-plugin</artifactId>
+                <version>1.9.1</version>
+                <configuration>
+                    <!-- Name of your app -->
+                    <name>DSE_FinalApp</name>
+
+                    <!-- Main class with your entry point -->
+                    <mainClass>org.example.Launcher</mainClass>
+
+                    <!-- JAR built by Maven -->
+                    <mainJar>DSE_Final.jar</mainJar>
+
+                    <!-- Input folder where Maven puts the JAR -->
+                    <input>${project.build.directory}</input>
+
+                    <!-- Output folder for the installer -->
+                    <destination>${project.build.directory}/installer</destination>
+
+                    <!-- Type of installer -->
+                    <type>exe</type>
+
+                    <!-- Optional: add shortcuts and menu entries -->
+                    <winMenu>true</winMenu>
+                    <winShortcut>true</winShortcut>
+
+                    <!-- Optional: custom icon -->
+                    <icon>${project.basedir}/app.ico</icon>
+                </configuration>
+            </plugin>
+
+
 
         </plugins>
 
