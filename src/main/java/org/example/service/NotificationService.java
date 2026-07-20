@@ -1,59 +1,31 @@
 package org.example.service;
 
-import org.example.config.ConfigManager;
+import org.example.database.DatabaseManager;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.time.Instant;
 
 /**
- * Stores user-visible application notifications and honours the user's preference.
+ * Notification helper: stores notifications in notifications table and provides a tiny API.
  */
 public final class NotificationService {
 
-    private static final String ENABLED_KEY = "notifications.enabled";
-    private static final String LOG_KEY = "notifications.log";
-    private static final int MAX_NOTIFICATIONS = 50;
-    private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("dd MMM yyyy, HH:mm");
+    private NotificationService() {}
 
-    private NotificationService() {
-    }
-
-    public static boolean isEnabled() {
-        return Boolean.parseBoolean(ConfigManager.get(ENABLED_KEY, "true"));
-    }
-
-    public static void setEnabled(boolean enabled) {
-        ConfigManager.set(ENABLED_KEY, Boolean.toString(enabled));
-    }
-
-    public static void add(String message) {
-        if (!isEnabled() || message == null || message.isBlank()) {
-            return;
+    public static void createNotification(String title, String message, String severity) {
+        String insert = "INSERT INTO notifications(title,message,severity,is_read,created_at) VALUES(?,?,?,?,?)";
+        try (Connection con = DatabaseManager.getConnection(); PreparedStatement ps = con.prepareStatement(insert)) {
+            ps.setString(1, title);
+            ps.setString(2, message);
+            ps.setString(3, severity == null ? "INFO" : severity);
+            ps.setInt(4, 0);
+            ps.setLong(5, Instant.now().toEpochMilli());
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
-
-        List<String> notifications = new ArrayList<>(getAll());
-        notifications.add(0, TIME_FORMAT.format(LocalDateTime.now()) + " — " + message.replace('\n', ' '));
-
-        if (notifications.size() > MAX_NOTIFICATIONS) {
-            notifications = notifications.subList(0, MAX_NOTIFICATIONS);
-        }
-
-        ConfigManager.set(LOG_KEY, String.join("\n", notifications));
     }
 
-    public static List<String> getAll() {
-        String value = ConfigManager.get(LOG_KEY, "");
-        if (value.isBlank()) {
-            return Collections.emptyList();
-        }
-
-        return List.of(value.split("\\R"));
-    }
-
-    public static void clear() {
-        ConfigManager.set(LOG_KEY, "");
-    }
 }
