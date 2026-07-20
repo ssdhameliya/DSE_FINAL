@@ -64,41 +64,29 @@
 
         <StackPane styleClass="table-card">
 
-            <TableView fx:id="tableItems">
-
+            <TableView fx:id="tableItems" prefHeight="600" prefWidth="1200">
                 <columns>
 
-                    <TableColumn fx:id="colCode"
-                                 text="Code"
-                                 prefWidth="120"/>
-
-                    <TableColumn fx:id="colDescription"
-                                 text="Description"
-                                 prefWidth="260"/>
-
-                    <TableColumn fx:id="colCategory"
-                                 text="Category"
-                                 prefWidth="150"/>
-
-                    <TableColumn fx:id="colBrand"
-                                 text="Brand"
-                                 prefWidth="150"/>
-
-                    <TableColumn fx:id="colStock"
-                                 text="Stock"
-                                 prefWidth="100"/>
-
-                    <TableColumn fx:id="colUnit"
-                                 text="Unit"
-                                 prefWidth="100"/>
-
-                    <TableColumn fx:id="colAction"
-                                 text="Action"
-                                 prefWidth="120"/>
-
+                    <TableColumn fx:id="colCode" text="Code" prefWidth="140"/>
+                    <TableColumn fx:id="colDescription" text="Description" prefWidth="300"/>
+                    <TableColumn fx:id="colCategory" text="Category" prefWidth="140"/>
+                    <TableColumn fx:id="colBrand" text="Brand" prefWidth="120"/>
+                    <TableColumn fx:id="colMaterial" text="Material" prefWidth="120"/>
+                    <TableColumn fx:id="colSize" text="Size" prefWidth="100"/>
+                    <TableColumn fx:id="colUnit" text="Unit" prefWidth="80"/>
+                    <TableColumn fx:id="colHsn" text="HSN" prefWidth="100"/>
+                    <TableColumn fx:id="colGst" text="GST %" prefWidth="90"/>
+                    <TableColumn fx:id="colPurchasePrice" text="Purchase Price" prefWidth="120"/>
+                    <TableColumn fx:id="colSellingPrice" text="Selling Price" prefWidth="120"/>
+                    <TableColumn fx:id="colOpeningStock" text="Opening Stock" prefWidth="120"/>
+                    <TableColumn fx:id="colMinimumStock" text="Minimum Stock" prefWidth="120"/>
+                    <TableColumn fx:id="colLocation" text="Location" prefWidth="140"/>
+                    <TableColumn fx:id="colRemarks" text="Remarks" prefWidth="240"/>
+                    <TableColumn fx:id="colAction" text="Action" prefWidth="120"/>
                 </columns>
-
             </TableView>
+
+
 
         </StackPane>
 

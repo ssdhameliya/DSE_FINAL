@@ -7,10 +7,9 @@ import java.util.Properties;
 
 public final class ConfigManager {
 
-    private static final String CONFIG_FOLDER = "D:\\JavaProject";
+    private static final String CONFIG_FOLDER = "D:" + File.separator + "Database and Config";
+    private static final String CONFIG_FILE = CONFIG_FOLDER + File.separator + "config.properties";
 
-    private static final String CONFIG_FILE =
-        CONFIG_FOLDER + File.separator + "config.properties";
 
     private static final Properties properties = new Properties();
 
@@ -75,5 +74,9 @@ public final class ConfigManager {
     public static void set(String key, String value) {
         properties.setProperty(key, value);
         save();
+    }
+
+    public static String getDbUrl() {
+        return null;
     }
 }

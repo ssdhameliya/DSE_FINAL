@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Excel import/export contract for item masters. The first worksheet uses the columns exported here.
@@ -18,6 +19,7 @@ import java.util.List;
 public final class ItemSpreadsheetService {
     private static final String[] HEADERS = {"Item Code", "Description", "Category", "Brand", "Material", "Size", "Unit", "HSN", "GST %", "Purchase Price", "Selling Price", "Opening Stock", "Minimum Stock", "Location", "Remarks"};
     private final ItemService itemService = new ItemService();
+
 
     public void exportItems(List<Item> items, Path file) throws IOException {
         try (Workbook workbook = new XSSFWorkbook(); OutputStream output = Files.newOutputStream(file)) {
@@ -151,6 +153,13 @@ public final class ItemSpreadsheetService {
         style.setDataFormat(workbook.createDataFormat().getFormat(format));
         return style;
     }
+    public org.example.service.ImportResult importWithMapping(Path path, Map<String, String> mapping, boolean dryRun) {
+        // TODO: implement full import logic (parsing, validation, DB writes)
+        // Return an empty result for now so the project compiles.
+        return new org.example.service.ImportResult(0, java.util.Collections.emptyList(), java.util.Collections.emptyMap());
+    }
+
+
 
     public record ImportResult(int imported, List<String> errors) {
         public boolean hasErrors() {

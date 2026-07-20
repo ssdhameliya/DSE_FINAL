@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.controller.ImportController"
+            prefHeight="600.0" prefWidth="1000.0">
+
+    <children>
+        <VBox spacing="12.0" AnchorPane.topAnchor="8.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.bottomAnchor="8.0">
+            <padding>
+                <Insets top="12" right="12" bottom="12" left="12"/>
+            </padding>
+
+            <!-- Step 1: File + Module -->
+            <TitledPane text="Step 1: Select File" expanded="true">
+                <content>
+                    <VBox spacing="8">
+                        <HBox spacing="10">
+                            <Button text="📂 Select File" fx:id="btnChooseFile" onAction="#onChooseImportFile"/>
+                            <Label fx:id="lblChosenFile" text="No file chosen"/>
+                        </HBox>
+                        <HBox spacing="8">
+                            <Label text="Module:"/>
+                            <ComboBox fx:id="cmbImportModule" prefWidth="200"/>
+                            <TextField fx:id="txtImportNote" promptText="Optional note" prefWidth="260"/>
+                        </HBox>
+                    </VBox>
+                </content>
+            </TitledPane>
+
+            <!-- Step 2: Mapping -->
+            <TitledPane text="Step 2: Column Mapping" expanded="true">
+                <content>
+                    <ScrollPane fitToWidth="true" fitToHeight="false" prefViewportHeight="180">
+                        <content>
+                            <GridPane fx:id="gridMapping" hgap="10" vgap="8">
+                                <padding>
+                                    <Insets top="8" right="8" bottom="8" left="8"/>
+                                </padding>
+                            </GridPane>
+                        </content>
+                    </ScrollPane>
+                </content>
+            </TitledPane>
+
+            <!-- Step 3: Preview -->
+            <TitledPane text="Step 3: Preview" expanded="true" VBox.vgrow="ALWAYS">
+                <content>
+                    <VBox spacing="6">
+                        <HBox alignment="CENTER_LEFT">
+                            <Label text="Preview (first 50 rows)" style="-fx-font-weight:bold;"/>
+                            <Pane HBox.hgrow="ALWAYS"/>
+                            <ProgressIndicator fx:id="piImport" visible="false" prefWidth="20" prefHeight="20"/>
+                        </HBox>
+
+                        <!-- TableView is allowed to grow -->
+                        <TableView fx:id="tblImportPreview" prefHeight="200.0" VBox.vgrow="ALWAYS"/>
+                    </VBox>
+                </content>
+            </TitledPane>
+
+            <!-- Step 4: Import -->
+            <HBox spacing="10" alignment="CENTER_RIGHT">
+                <CheckBox fx:id="chkDryRun" text="Dry run"/>
+                <Button text="✅ Import" fx:id="btnRunImport" onAction="#onRunImport"/>
+            </HBox>
+        </VBox>
+    </children>
+</AnchorPane>

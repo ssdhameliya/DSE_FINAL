@@ -62,3 +62,6 @@ installer/
 # OS
 .DS_Store
 Thumbs.db
+
+*.exe
+target/

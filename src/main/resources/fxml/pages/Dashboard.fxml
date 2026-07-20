@@ -160,6 +160,10 @@
 
             <Separator/>
 
+
+
+            <Separator/>
+
             <Label text="REPORTS"/>
 
 
@@ -167,6 +171,13 @@
                     text="📄 Reports"
 
                     onAction="#openReports"/>
+
+            <Label text="Imports"/>
+
+
+            <Button fx:id="btnImport"
+                    text="📄 Import"
+                    onAction="#openImport"/>
 
             <Separator/>
 

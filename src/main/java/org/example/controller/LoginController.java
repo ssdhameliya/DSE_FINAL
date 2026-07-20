@@ -62,7 +62,14 @@
                 return;
             }
 
-            pendingUser = users.authenticate(identity, password);
+            try {
+                pendingUser = users.authenticate(identity, password);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                message("Login failed: " + ex.getMessage(), true);
+                return;
+            }
+
             if (pendingUser == null) {
                 message("Invalid email/username or password.", true);
                 return;
@@ -77,7 +84,6 @@
                 message(exception.getMessage(), true);
             }
         }
-
         private void verifyOtp() {
             if (!OtpService.verify(txtOtp.getText())) {
                 message("The verification code is invalid or expired.", true);

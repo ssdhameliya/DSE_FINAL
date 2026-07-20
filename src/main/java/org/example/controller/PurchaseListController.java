@@ -681,7 +681,7 @@ public class PurchaseListController {
 
     }
 
-    private void resendEmail(Purchase purchase) {
+   /* private void resendEmail(Purchase purchase) {
 
         try {
 
@@ -753,7 +753,7 @@ public class PurchaseListController {
 
         }
 
-    }
+    }*/
 
     private void printPurchase(Purchase purchase) {
 
@@ -1123,5 +1123,48 @@ public class PurchaseListController {
             });
 
     }
+
+    @FXML
+    private void resendEmail(Purchase purchase) {
+        try {
+            Purchase invoice = purchaseService.getByInvoice(purchase.getInvoiceNo());
+
+            if (invoice == null) {
+                new Alert(Alert.AlertType.ERROR, "Invoice not found.").showAndWait();
+                return;
+            }
+
+            String email = invoice.getSupplier().getEmail();
+            if (email == null || email.isBlank()) {
+                new Alert(Alert.AlertType.WARNING, "Supplier email not available.").showAndWait();
+                return;
+            }
+
+            Path pdf = InvoicePdfService.purchase(invoice);
+
+            EmailService.send(
+                email,
+                "Purchase Invoice " + invoice.getInvoiceNo(),
+                "Please find attached purchase invoice.",
+                pdf
+            );
+
+            Files.deleteIfExists(pdf);
+            purchaseService.markEmailSent(invoice.getId());
+            NotificationService.add("Purchase Invoice " + invoice.getInvoiceNo() + " emailed.");
+            refresh();
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Email Sent");
+            alert.setHeaderText("Invoice emailed successfully.");
+            alert.setContentText("Invoice No : " + purchase.getInvoiceNo() +
+                "\nSent To : " + invoice.getSupplier().getEmail());
+            alert.showAndWait();
+
+        } catch (Exception ex) {
+            new Alert(Alert.AlertType.ERROR, ex.getMessage()).showAndWait();
+        }
+    }
+
 
 }

@@ -1,18 +1,16 @@
 package org.example.controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
+import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import org.example.model.Item;
 import org.example.service.ItemService;
 import org.example.service.ItemSpreadsheetService;
@@ -21,118 +19,202 @@ import org.example.service.NotificationService;
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Locale;
 
 public class ItemMasterController {
 
-    @FXML
-    private TextField txtSearch;
+    @FXML private TextField txtSearch;
+    @FXML private TableView<Item> tableItems;
+    @FXML private Label lblRecordCount;
 
-    @FXML
-    private TableView<Item> tableItems;
-    @FXML
-    private Label lblRecordCount;
 
-    @FXML
-    private TableColumn<Item, String> colCode;
+    @FXML private TableColumn<Item, String> colCode;
+    @FXML private TableColumn<Item, String> colDescription;
+    @FXML private TableColumn<Item, String> colCategory;
+    @FXML private TableColumn<Item, String> colBrand;
+    @FXML private TableColumn<Item, String> colMaterial;
+    @FXML private TableColumn<Item, String> colSize;
+    @FXML private TableColumn<Item, String> colUnit;
+    @FXML private TableColumn<Item, String> colHsn;
+    @FXML private TableColumn<Item, Double> colGst;
+    @FXML private TableColumn<Item, Double> colPurchasePrice;
+    @FXML private TableColumn<Item, Double> colSellingPrice;
+    @FXML private TableColumn<Item, Double> colOpeningStock;
+    @FXML private TableColumn<Item, Double> colMinimumStock;
+    @FXML private TableColumn<Item, String> colLocation;
+    @FXML private TableColumn<Item, String> colRemarks;
+    @FXML private TableColumn<Item, Void> colAction;
 
-    @FXML
-    private TableColumn<Item, String> colDescription;
-
-    @FXML
-    private TableColumn<Item, String> colCategory;
-
-    @FXML
-    private TableColumn<Item, String> colBrand;
-
-    @FXML
-    private TableColumn<Item, Double> colStock;
-
-    @FXML
-    private TableColumn<Item, String> colUnit;
-
-    @FXML
-    private TableColumn<Item, Void> colAction;
-
+    private final ObservableList<Item> items = FXCollections.observableArrayList();
     private final ItemService service = new ItemService();
     private final ItemSpreadsheetService spreadsheetService = new ItemSpreadsheetService();
 
     @FXML
     public void initialize() {
+        // Column bindings
+
         colCode.setCellValueFactory(new PropertyValueFactory<>("itemCode"));
         colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
         colCategory.setCellValueFactory(new PropertyValueFactory<>("category"));
         colBrand.setCellValueFactory(new PropertyValueFactory<>("brand"));
-        colStock.setCellValueFactory(new PropertyValueFactory<>("openingStock"));
+        colMaterial.setCellValueFactory(new PropertyValueFactory<>("material"));
+        colSize.setCellValueFactory(new PropertyValueFactory<>("size"));
         colUnit.setCellValueFactory(new PropertyValueFactory<>("unit"));
-        txtSearch.textProperty().addListener((obs, oldValue, newValue) -> loadItems());
-        loadItems();
+        colHsn.setCellValueFactory(new PropertyValueFactory<>("hsn"));
+        colGst.setCellValueFactory(new PropertyValueFactory<>("gst"));
+        colGst.setCellFactory(tc -> new TableCell<>() {
+            @Override protected void updateItem(Double v, boolean empty) {
+                super.updateItem(v, empty);
+                setText(empty || v == null ? null : String.format("%.2f", v));
+            }
+        });
 
-    }
+        colPurchasePrice.setCellValueFactory(new PropertyValueFactory<>("purchasePrice"));
+        colPurchasePrice.setCellFactory(tc -> new TableCell<>() {
+            @Override protected void updateItem(Double v, boolean empty) {
+                super.updateItem(v, empty);
+                setText(empty || v == null ? null : "₹" + String.format("%,.2f", v));
+            }
+        });
 
-    @FXML
-    private void newItem() {
+        colSellingPrice.setCellValueFactory(new PropertyValueFactory<>("sellingPrice"));
+        colSellingPrice.setCellFactory(tc -> new TableCell<>() {
+            @Override protected void updateItem(Double v, boolean empty) {
+                super.updateItem(v, empty);
+                setText(empty || v == null ? null : "₹" + String.format("%,.2f", v));
+            }
+        });
 
-        try {
+        colOpeningStock.setCellValueFactory(new PropertyValueFactory<>("openingStock"));
+        colOpeningStock.setCellFactory(tc -> new TableCell<>() {
+            @Override protected void updateItem(Double v, boolean empty) {
+                super.updateItem(v, empty);
+                setText(empty || v == null ? null : String.format("%,.3f", v));
+            }
+        });
 
-            URL url = getClass().getResource("/fxml/pages/Itemdialog.fxml");
+        colMinimumStock.setCellValueFactory(new PropertyValueFactory<>("minimumStock"));
+        colMinimumStock.setCellFactory(tc -> new TableCell<>() {
+            @Override protected void updateItem(Double v, boolean empty) {
+                super.updateItem(v, empty);
+                setText(empty || v == null ? null : String.format("%,.3f", v));
+            }
+        });
 
-            if (url == null) {
-                throw new RuntimeException("Itemdialog.fxml not found");
+        colLocation.setCellValueFactory(new PropertyValueFactory<>("location"));
+
+        colRemarks.setCellValueFactory(new PropertyValueFactory<>("remarks"));
+        colRemarks.setCellFactory(tc -> {
+            TableCell<Item, String> cell = new TableCell<>() {
+                @Override protected void updateItem(String v, boolean empty) {
+                    super.updateItem(v, empty);
+                    setText(empty || v == null ? null : v);
+                    setWrapText(true);
+                }
+            };
+            return cell;
+        });
+
+        // Action column (Edit / Delete)
+        colAction.setCellFactory(tc -> new TableCell<>() {
+            private final Button btnEdit =
+                new Button("✏");
+
+
+            private final Button btnDelete =
+                new Button("🗑");
+
+
+
+
+
+            {
+                btnEdit.getStyleClass().add("small-button");
+                btnDelete.getStyleClass().add("small-button-danger");
+                btnEdit.setOnAction(e -> {
+                    Item item = getTableView().getItems().get(getIndex());
+                    openItemDialog(item);
+                });
+                btnEdit.setTooltip(new Tooltip("Edit Item"));
+                btnDelete.setOnAction(e -> {
+                    Item item = getTableView().getItems().get(getIndex());
+                    deleteItem(item);
+
+                });
+                btnDelete.setTooltip(new Tooltip("Delete Item"));
             }
 
-            FXMLLoader loader = new FXMLLoader(url);
+            @Override protected void updateItem(Void v, boolean empty) {
+                super.updateItem(v, empty);
+                if (empty) setGraphic(null);
+                else setGraphic(new HBox(6, btnEdit, btnDelete));
+            }
+        });
 
-            Parent root = loader.load();
+        tableItems.setItems(items);
 
-            showDialog(loader, root, "Add New Item", null);
+        // Search listener
+        txtSearch.textProperty().addListener((obs, oldValue, newValue) -> loadItems());
 
-        } catch (Exception e) {
-
-            e.printStackTrace();
-
-        }
-
+        // initial load
+        loadItems();
     }
 
-    @FXML
-    private void editItem() {
-        Item selected = tableItems.getSelectionModel().getSelectedItem();
-        if (selected == null) {
-            showWarning("Select an item to edit.");
-            return;
-        }
+    private void openItemDialog(Item item) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/pages/Itemdialog.fxml"));
+            URL url = getClass().getResource("/fxml/pages/Itemdialog.fxml");
+            if (url == null) throw new RuntimeException("Itemdialog.fxml not found");
+            FXMLLoader loader = new FXMLLoader(url);
             Parent root = loader.load();
-            showDialog(loader, root, "Edit Item", selected);
+            ItemDialogController controller = loader.getController();
+            if (item != null) controller.setItem(item);
+            Stage stage = new Stage();
+            stage.setTitle(item == null ? "Add New Item" : "Edit Item");
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+            stage.showAndWait();
+            loadItems();
         } catch (Exception e) {
             showError("Could not open the item dialog: " + e.getMessage());
         }
     }
 
     @FXML
-    private void deleteItem() {
+    private void newItem() { openItemDialog(null); }
+
+    @FXML
+    private void editItem() {
         Item selected = tableItems.getSelectionModel().getSelectedItem();
-        if (selected == null) {
-            showWarning("Select an item to delete.");
-            return;
-        }
+        if (selected == null) { showWarning("Select an item to edit."); return; }
+        openItemDialog(selected);
+    }
+
+    private void deleteItem(Item selected) {
+        if (selected == null) { showWarning("Select an item to delete."); return; }
         Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION,
             "Delete item '" + selected.getDescription() + "'? This cannot be undone.",
             ButtonType.YES, ButtonType.NO);
         confirmation.setHeaderText("Confirm deletion");
         if (confirmation.showAndWait().orElse(ButtonType.NO) == ButtonType.YES) {
-            service.delete(selected.getItemCode());
-            NotificationService.add("Item '" + selected.getDescription() + "' was deleted.");
-            loadItems();
+            try {
+                service.delete(selected.getItemCode());
+                NotificationService.add("Item '" + selected.getDescription() + "' was deleted.");
+                loadItems();
+            } catch (Exception e) {
+                showError("Could not delete item: " + e.getMessage());
+            }
         }
     }
 
     @FXML
-    private void refresh() {
-        loadItems();
+    private void deleteItem() { // keep compatibility with FXML onAction
+        Item selected = tableItems.getSelectionModel().getSelectedItem();
+        deleteItem(selected);
     }
+
+    @FXML
+    private void refresh() { loadItems(); }
 
     @FXML
     private void importItems() {
@@ -174,29 +256,21 @@ public class ItemMasterController {
         }
     }
 
-    private void showDialog(FXMLLoader loader, Parent root, String title, Item item) {
-        ItemDialogController controller = loader.getController();
-        if (item != null) {
-            controller.setItem(item);
-        }
-        Stage stage = new Stage();
-        stage.setTitle(title);
-        stage.setScene(new Scene(root));
-        stage.setResizable(false);
-        stage.showAndWait();
-        loadItems();
-    }
-
     private void loadItems() {
         String query = txtSearch.getText() == null ? "" : txtSearch.getText().trim().toLowerCase(Locale.ROOT);
-        tableItems.getItems().setAll(service.getAll().stream()
-            .filter(item -> query.isEmpty()
-                || item.getItemCode().toLowerCase(Locale.ROOT).contains(query)
-                || item.getDescription().toLowerCase(Locale.ROOT).contains(query)
-                || (item.getCategory() != null && item.getCategory().toLowerCase(Locale.ROOT).contains(query))
-                || (item.getBrand() != null && item.getBrand().toLowerCase(Locale.ROOT).contains(query)))
-            .toList());
-        lblRecordCount.setText("Showing " + tableItems.getItems().size() + " Record" + (tableItems.getItems().size() == 1 ? "" : "s"));
+        try {
+            List<Item> list = service.getAll();
+            items.setAll(list.stream()
+                .filter(item -> query.isEmpty()
+                    || (item.getItemCode() != null && item.getItemCode().toLowerCase(Locale.ROOT).contains(query))
+                    || (item.getDescription() != null && item.getDescription().toLowerCase(Locale.ROOT).contains(query))
+                    || (item.getCategory() != null && item.getCategory().toLowerCase(Locale.ROOT).contains(query))
+                    || (item.getBrand() != null && item.getBrand().toLowerCase(Locale.ROOT).contains(query)))
+                .toList());
+            lblRecordCount.setText("Showing " + items.size() + " Record" + (items.size() == 1 ? "" : "s"));
+        } catch (Exception e) {
+            showError("Could not load items: " + e.getMessage());
+        }
     }
 
     private void showWarning(String message) {
@@ -210,6 +284,4 @@ public class ItemMasterController {
         alert.setHeaderText(null);
         alert.showAndWait();
     }
-
-
 }

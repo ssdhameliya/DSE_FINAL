@@ -13,7 +13,7 @@ import static java.awt.image.ImageObserver.WIDTH;
 
 public class SceneManager {
 
-    private static Stage primaryStage;
+    public static Stage primaryStage;
 
 
 
@@ -29,7 +29,7 @@ public class SceneManager {
 
     }
 
-    public static void showSplash() { load("/fxml/pages/Login.fxml");
+    public static void showSplash() { load("/fxml/pages/Dashboard.fxml");
     }
 
     public static void showLogin() {load("/fxml/pages/Login.fxml");

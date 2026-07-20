@@ -32,6 +32,8 @@ import org.example.service.NotificationService;
 public class DashboardController {
 
 
+    public Button btnRunImport;
+    public Button btnImport;
     @FXML
     private Button btnDashboard;
     @FXML
@@ -230,6 +232,14 @@ public class DashboardController {
         openPage(btnReports,
             "Reports",
             "/fxml/pages/Reports.fxml");
+
+    }
+
+    @FXML
+    private void openImport() {
+        openPage(btnImport,
+            "Import",
+            "/fxml/pages/Import.fxml");
 
     }
 
